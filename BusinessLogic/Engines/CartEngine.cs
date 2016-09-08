@@ -91,8 +91,7 @@ namespace FinalLab.Engines
                 }
                 Cart cart = new Cart()
                 {
-                    Username = account.Username,
-                    TimeCreated = cartItems.First().TimeCreated
+                    Username = account.Username
                 };
                 foreach (var cartItem in cartItems)
                 {
@@ -122,7 +121,7 @@ namespace FinalLab.Engines
             }
         }
 
-        internal void RemoveCartRecordsByUsername(string username)
+        internal void RemoveCartRecordsByUsername(string username) // has bug while trying to save another cart of the same user
         {
             using (CatalogContext context = new CatalogContext())
             {

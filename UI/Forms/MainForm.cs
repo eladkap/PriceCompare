@@ -271,6 +271,11 @@ namespace FinalLab
 
         private void ViewCart()
         {
+            if (_store == null)
+            {
+                MessageBox.Show($"You didn't choose a store.", "View Cart", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             _cartForm = new CartForm();
             _cartForm.SetCart(_cart);
             _cartForm.SetStore(_store);
@@ -368,6 +373,11 @@ namespace FinalLab
         private void LoadCartFromDatabase()
         {
             Cart cart = _cartManager.LoadCartFromDatabase(_account);
+            if (cart == null)
+            {
+                MessageBox.Show($"You don't have a cart.", "Load Cart", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
             _cartManager.ClearCart(_cart);
             foreach (var cartItem in cart.Items)
             {
@@ -416,6 +426,11 @@ namespace FinalLab
             {
                 MessageBox.Show("Cart is empty.", "Cart", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
             }
+        }
+
+        private void comboBox_city_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }

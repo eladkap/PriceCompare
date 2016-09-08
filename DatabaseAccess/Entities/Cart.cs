@@ -23,9 +23,6 @@ namespace FinalLab.Entities
         [Key, Column("item_code", Order = 1)]
         public string ItemCode { get; set; }
 
-        [Key, Column("time_created", Order = 2)]
-        public DateTime TimeCreated { get; set; }
-
         [Column("amount")]
         public int Amount { get; set; }
 
@@ -35,7 +32,6 @@ namespace FinalLab.Entities
             {
                 ItemCode = this.ItemCode,
                 Username = this.Username,
-                TimeCreated = this.TimeCreated,
                 Amount = this.Amount
             };
             return cart;

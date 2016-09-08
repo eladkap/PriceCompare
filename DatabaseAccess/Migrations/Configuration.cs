@@ -10,6 +10,7 @@ namespace FinalLab.Migrations
         public Configuration()
         {
             AutomaticMigrationsEnabled = true;
+            AutomaticMigrationDataLossAllowed = true;
         }
 
         protected override void Seed(FinalLab.CatalogContext context)

@@ -73,7 +73,6 @@ namespace FinalLab.Forms
 
         private void SetCartProperties()
         {
-            _cart.TimeCreated = DateTime.Now;
             _cart.Username = _account.Username;
         }
 

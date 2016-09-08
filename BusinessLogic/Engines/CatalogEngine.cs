@@ -5,7 +5,6 @@ using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace FinalLab.Engines
 {
@@ -106,12 +105,8 @@ namespace FinalLab.Engines
             using (CatalogContext context = new CatalogContext())
             {
                 var citiesCollection = (from store in context.Stores
-                                       group store by store.City into cityGroup
-                                       select cityGroup).ToList();
-                var citiesList = new List<string>();
-                citiesCollection.ForEach((cityGroup)=> citiesList.Add(cityGroup.Key));
-                return citiesList;
-
+                                        select store.City).Distinct();
+                return citiesCollection.ToList();
             }
         }
 
@@ -153,7 +148,7 @@ namespace FinalLab.Engines
             }
         }
 
-       
+
 
         internal ICollection<Store> GetStoresByChainName(string chainNameHebrew)
         {

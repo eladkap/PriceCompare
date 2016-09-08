@@ -320,6 +320,8 @@
             this.comboBox_city.Name = "comboBox_city";
             this.comboBox_city.Size = new System.Drawing.Size(242, 24);
             this.comboBox_city.TabIndex = 19;
+            this.comboBox_city.Visible = false;
+            this.comboBox_city.SelectedIndexChanged += new System.EventHandler(this.comboBox_city_SelectedIndexChanged);
             // 
             // lbl_chooseCity
             // 
@@ -330,6 +332,7 @@
             this.lbl_chooseCity.Size = new System.Drawing.Size(81, 17);
             this.lbl_chooseCity.TabIndex = 15;
             this.lbl_chooseCity.Text = "Choose city";
+            this.lbl_chooseCity.Visible = false;
             // 
             // MainForm
             // 
