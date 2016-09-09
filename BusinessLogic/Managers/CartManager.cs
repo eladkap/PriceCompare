@@ -54,11 +54,6 @@ namespace FinalLab.Managers
             cartEngine.DecrementItemUnitToCart(cart, item);
         }
 
-        public ICollection GetCartDetails(Cart cart)
-        {
-            return cartEngine.GetCartDetails(cart);
-        }
-
         public int GetCartItemAmount(Cart cart, Item item)
         {
             return cartEngine.GetCartItemAmount(cart, item);

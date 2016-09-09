@@ -22,7 +22,7 @@ namespace FinalLab
         public DateTime UpdateTime { get; set; }
 
         [Column("price")]
-        public float price { get; set; }
+        public float PriceValue { get; set; }
 
         [Column("allow_discount")]
         public bool AllowDiscount { get; set; }

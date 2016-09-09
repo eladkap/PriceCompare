@@ -40,7 +40,7 @@ namespace FinalLab
             _panel.Controls.Add(_lbl_totalCost);
             _panel.BorderStyle = BorderStyle.FixedSingle;
             _panel.Height = 100;
-            _panel.Width = 300;
+            _panel.Width = 400;
         }
 
         public void SetLabelStoreName(Store store)

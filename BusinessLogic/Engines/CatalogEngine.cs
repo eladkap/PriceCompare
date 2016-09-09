@@ -339,7 +339,7 @@ namespace FinalLab.Engines
                 Price price = GetItemUpdatedPriceByStore(item, store);
                 if (price != null)
                 {
-                    totalCost += item.QtyInPackage * price.price;
+                    totalCost += item.QtyInPackage * price.PriceValue;
                 }
             }
             return totalCost;

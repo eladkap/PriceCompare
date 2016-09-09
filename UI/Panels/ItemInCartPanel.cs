@@ -95,7 +95,7 @@ namespace FinalLab
             LblPriceUnit = new Label();
             LblPriceUnit.Name = "lbl_priceUnit";
             LblPriceUnit.Font = new Font("Arial", FontSize, FontStyle.Bold);
-            LblPriceUnit.Text = $"{price?.price.ToString()} {Constants.Currency}";
+            LblPriceUnit.Text = $"{price?.PriceValue.ToString()} {Constants.Currency}";
             LblPriceUnit.AutoSize = true;
             LblPriceUnit.Height = 20;
             LblPriceUnit.Width = 50;
@@ -108,7 +108,7 @@ namespace FinalLab
             LblPriceTotal = new Label();
             LblPriceTotal.Name = "lbl_priceTotal";
             LblPriceTotal.Font = new Font("Arial", FontSize, FontStyle.Bold);
-            LblPriceTotal.Text = $"{price?.price.ToString()} {Constants.Currency}";
+            LblPriceTotal.Text = $"{(price?.PriceValue * _item.QtyInPackage).ToString()} {Constants.Currency}";
             LblPriceTotal.AutoSize = true;
             LblPriceTotal.Height = 20;
             LblPriceTotal.Width = 50;

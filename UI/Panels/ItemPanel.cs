@@ -117,7 +117,7 @@ namespace FinalLab
             _lbl_itemPrice.Name = "lbl_itemPrice";
             _lbl_itemPrice.Font = new Font("Arial", FontSize, FontStyle.Bold);
             _lbl_itemPrice.ForeColor = Color.ForestGreen;
-            double totalCost = Math.Round(price.price, Constants.CostProximity);
+            double totalCost = Math.Round(price.PriceValue, Constants.CostProximity);
             _lbl_itemPrice.Text = $"{totalCost} {Constants.Currency}";
             _lbl_itemPrice.AutoSize = true;
             _lbl_itemPrice.Height = 20;

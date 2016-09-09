@@ -34,7 +34,7 @@ namespace FinalLab.Forms
             foreach (var price in pricesList)
             {
                 //System.Diagnostics.Debug.WriteLine($"{price.UpdateTime} {price.price}");
-                MessageBox.Show($"{price.UpdateTime} {price.price}");
+                MessageBox.Show($"{price.UpdateTime} {price.PriceValue}");
             }
         }
     }

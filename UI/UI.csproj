@@ -67,6 +67,12 @@
     <Compile Include="Forms\ComparePricesForm.Designer.cs">
       <DependentUpon>ComparePricesForm.cs</DependentUpon>
     </Compile>
+    <Compile Include="Forms\ExpensiveCheapForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ExpensiveCheapForm.Designer.cs">
+      <DependentUpon>ExpensiveCheapForm.cs</DependentUpon>
+    </Compile>
     <Compile Include="Forms\ItemDetailsForm.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -100,6 +106,7 @@
     <Compile Include="Panels\CompareItemPanel.cs" />
     <Compile Include="Panels\ItemInCartPanel.cs" />
     <Compile Include="Panels\ItemPanel.cs" />
+    <Compile Include="Panels\ItemPricePanel.cs" />
     <Compile Include="Panels\StoreCostPanel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -109,6 +116,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ComparePricesForm.resx">
       <DependentUpon>ComparePricesForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ExpensiveCheapForm.resx">
+      <DependentUpon>ExpensiveCheapForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ItemDetailsForm.resx">
       <DependentUpon>ItemDetailsForm.cs</DependentUpon>

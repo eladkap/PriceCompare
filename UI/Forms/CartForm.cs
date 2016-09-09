@@ -171,9 +171,9 @@ namespace FinalLab.Forms
             }
             else
             {
-                lbl_priceUnit.Text = $"{price.price} {Constants.Currency}";
+                lbl_priceUnit.Text = $"{price.PriceValue} {Constants.Currency}";
                 Label lbl_priceTotal = GetPriceTotalLabelFromPanel(itemInCartPanel);
-                lbl_priceTotal.Text = $"{price.price * amount} {Constants.Currency}";
+                lbl_priceTotal.Text = $"{price.PriceValue * amount} {Constants.Currency}";
             }
             if (_cartManager.GetCartItemAmount(_cart, item) == 0)
             {

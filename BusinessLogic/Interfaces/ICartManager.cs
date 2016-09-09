@@ -22,8 +22,6 @@ namespace FinalLab.Interfaces
 
         void DecrementItemUnitToCart(Cart cart, Item item);
 
-        ICollection GetCartDetails(Cart cart);
-
         int GetCartItemAmount(Cart cart, Item item);
 
         void SaveCartInDatabase(Cart cart);

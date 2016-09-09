@@ -60,12 +60,6 @@ namespace FinalLab.Engines
             }
         }
 
-        // check if necassary
-        public ICollection GetCartDetails(Cart cart)
-        {
-            throw new NotImplementedException();
-        }
-
         public int GetCartItemAmount(Cart cart, Item item)
         {
             foreach (Item _item in cart.Items)

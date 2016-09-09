@@ -43,6 +43,7 @@
             this.pictureBox_chainLogo1 = new System.Windows.Forms.PictureBox();
             this.pictureBox_chainLogo2 = new System.Windows.Forms.PictureBox();
             this.flowLayoutPanel_comparison = new System.Windows.Forms.FlowLayoutPanel();
+            this.btn_showMostExpensiveCheap = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_chainLogo1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_chainLogo2)).BeginInit();
             this.SuspendLayout();
@@ -184,16 +185,29 @@
             // 
             // flowLayoutPanel_comparison
             // 
-            this.flowLayoutPanel_comparison.Location = new System.Drawing.Point(457, 353);
+            this.flowLayoutPanel_comparison.Location = new System.Drawing.Point(457, 357);
             this.flowLayoutPanel_comparison.Name = "flowLayoutPanel_comparison";
             this.flowLayoutPanel_comparison.Size = new System.Drawing.Size(738, 100);
             this.flowLayoutPanel_comparison.TabIndex = 15;
+            // 
+            // btn_showMostExpensiveCheap
+            // 
+            this.btn_showMostExpensiveCheap.Enabled = false;
+            this.btn_showMostExpensiveCheap.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.btn_showMostExpensiveCheap.Location = new System.Drawing.Point(205, 406);
+            this.btn_showMostExpensiveCheap.Name = "btn_showMostExpensiveCheap";
+            this.btn_showMostExpensiveCheap.Size = new System.Drawing.Size(192, 51);
+            this.btn_showMostExpensiveCheap.TabIndex = 16;
+            this.btn_showMostExpensiveCheap.Text = "Show Most Expensive/Cheap";
+            this.btn_showMostExpensiveCheap.UseVisualStyleBackColor = true;
+            this.btn_showMostExpensiveCheap.Click += new System.EventHandler(this.btn_showMostExpensiveCheap_Click);
             // 
             // ComparePricesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(1396, 662);
+            this.ClientSize = new System.Drawing.Size(1539, 685);
+            this.Controls.Add(this.btn_showMostExpensiveCheap);
             this.Controls.Add(this.flowLayoutPanel_comparison);
             this.Controls.Add(this.pictureBox_chainLogo2);
             this.Controls.Add(this.pictureBox_chainLogo1);
@@ -235,5 +249,6 @@
         private System.Windows.Forms.PictureBox pictureBox_chainLogo1;
         private System.Windows.Forms.PictureBox pictureBox_chainLogo2;
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel_comparison;
+        private System.Windows.Forms.Button btn_showMostExpensiveCheap;
     }
 }
