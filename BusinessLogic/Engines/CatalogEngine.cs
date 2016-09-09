@@ -161,13 +161,6 @@ namespace FinalLab.Engines
             }
         }
 
-        public void UpdateCatalogFromXmlFiles()
-        {
-            UpdateChainStores();
-            //UpdateItems();
-            //UpdatePrices();
-        }
-
         // use this method for the graph price-time
         public ICollection<Price> GetItemPricesOrderByUpdateTime(Item item)
         {
@@ -345,39 +338,58 @@ namespace FinalLab.Engines
             }
         }
 
-        internal void UpdatePrices()
+        internal int UpdatePrices()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
-        internal void UpdateItems()
+        internal int UpdateItems()
         {
-            throw new NotImplementedException();
+            return 0;
         }
 
-        internal void UpdateChainStores()
+        internal int UpdateChainStores()
         {
             XmlDecoder xmlDecoder = new XmlDecoder();
-            string[] filePaths = filePaths = Directory.GetFiles(Constants.XmlStoresDirPath, "Stores*.xml", SearchOption.AllDirectories);
+            string[] filePaths = filePaths = Directory.GetFiles(Constants.XmlStoresDirPath, "*.xml", SearchOption.AllDirectories);
             int filesCounter = 0;
+            int storeNum = 0;
             foreach (var filePath in filePaths)
             {
-                Chain chain = xmlDecoder.DecodeChainFromFile(filePath);
-                InsertChainIntoCatalog(chain);
+                //string filePath1 = @"D:\files\Stores\Stores7290027600007-000-201609060827.xml";
+                string filePath1 = @"D:\files\Stores\Stores7290873255550-201609092005.xml";
+                Chain chain = xmlDecoder.DecodeChainFromFile(filePath1);
+                storeNum += InsertChainStoresIntoCatalog(chain);
                 filesCounter++;
                 if (filesCounter == Constants.XmlFilesNumber)
                 {
                     break;
                 }
             }
+            return storeNum;
         }
 
-        public void InsertChainIntoCatalog(Chain chain)
+        public int InsertChainStoresIntoCatalog(Chain chain)
         {
             using (CatalogContext context = new CatalogContext())
             {
-                context.Chains.Add(chain);
-                context.SaveChangesAsync();
+                bool chainExists = context.Chains.Any(currChain => currChain.ChainId.Equals(chain.ChainId));
+                if (!chainExists)
+                {
+                    context.Chains.Add(chain);
+                }
+                int storesNum = 0;
+                foreach (var store in chain.Stores)
+                {
+                    bool storeExists = context.Stores.Any(currStore => currStore.StoreId.Equals(store.StoreId));
+                    if (!storeExists)
+                    {
+                        context.Stores.Add(store);
+                        storesNum++;
+                    }
+                }
+                context.SaveChanges();
+                return storesNum;
             }
         }
     }

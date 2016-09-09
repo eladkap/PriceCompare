@@ -48,7 +48,7 @@ namespace FinalLab.Entities
         public void SetLogin()
         {
             IsLogin = true;
-            Nickname = Username;
+            Nickname = Capitalize(Nickname);
         }
 
         public void SetLogout()
@@ -63,6 +63,15 @@ namespace FinalLab.Entities
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        private static string Capitalize(string str)
+        {
+            if (string.IsNullOrEmpty(str))
+            {
+                return null;
+            }
+            return str.First().ToString().ToUpper() + str.Substring(1);
         }
     }
 }

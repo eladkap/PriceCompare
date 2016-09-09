@@ -85,14 +85,39 @@ namespace FinalLab
             }
         }
 
+        private void UpdateChainStores()
+        {
+            int storesNum = _catalogManager.UpdateChainStores();
+            MessageBox.Show($"{storesNum} stores were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void UpdateItems()
+        {
+           // int itemsNum = _catalogManager.UpdateItems();
+           // MessageBox.Show($"{itemsNum} items were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
+        private void UpdatePrices()
+        {
+            // int pricesNum = _catalogManager.UpdatePrices();
+            // MessageBox.Show($"{pricesNum} prices were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+        }
+
         private void UpdateCatalog()
         {
-            _catalogManager.UpdateCatalogFromXmlFiles();
+            UpdateChainStores();
+            UpdateItems();
+            UpdatePrices();
         }
 
         // do it async!!
         private void updateToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            //if (!_account.Permission.Equals("admin"))
+            //{
+            //   MessageBox.Show("You are not an admin.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+            //   return;
+            //}
             UpdateCatalog();
             MessageBox.Show("Catalog was updated successfully.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
@@ -363,6 +388,11 @@ namespace FinalLab
         internal void SetAccountUsername(string username)
         {
             _account.Username = username;
+        }
+
+        internal void SetAccountPermission(string permission)
+        {
+            _account.Permission = permission;
         }
 
         private void myCartToolStripMenuItem_Click(object sender, EventArgs e)

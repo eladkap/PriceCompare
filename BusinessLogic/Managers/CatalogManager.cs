@@ -75,7 +75,7 @@ namespace FinalLab.Managers
 
         public void InsertChainIntoCatalog(Chain chain)
         {
-            catalogEngine.InsertChainIntoCatalog(chain);
+            catalogEngine.InsertChainStoresIntoCatalog(chain);
         }
 
         public void InsertItemIntoCatalog(Item item)
@@ -153,24 +153,19 @@ namespace FinalLab.Managers
             return catalogEngine.GetAllPricesByItemAndStore(item, store);
         }
 
-        public void UpdateChainStores()
+        public int UpdateChainStores()
         {
-            catalogEngine.UpdateChainStores();
+            return catalogEngine.UpdateChainStores();
         }
 
-        public void UpdateItems()
+        public int UpdateItems()
         {
-            catalogEngine.UpdateItems();
+            return catalogEngine.UpdateItems();
         }
 
-        public void UpdatePrices()
+        public int UpdatePrices()
         {
-            catalogEngine.UpdatePrices();
-        }
-
-        public void UpdateCatalogFromXmlFiles()
-        {
-            catalogEngine.UpdateCatalogFromXmlFiles();
+            return catalogEngine.UpdatePrices();
         }
     }
 }

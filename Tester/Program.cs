@@ -13,7 +13,7 @@ namespace Tester
         static void TestGetChainAndItsStoresFromXml()
         {
             XmlDecoder decoder = new XmlDecoder();
-            string storesXmlFilePath = $@"{Constants.XmlStoresDirPath}\Stores7290027600007-000-201608230201.xml";
+            string storesXmlFilePath = $@"{Constants.XmlStoresDirPath}\Stores7290027600007-000-201609060827.xml";
             Chain chain = decoder.DecodeChainFromFile(storesXmlFilePath);
             foreach (var store in chain.Stores)
             {

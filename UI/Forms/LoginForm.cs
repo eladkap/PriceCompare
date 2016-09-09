@@ -120,7 +120,18 @@ namespace FinalLab.Forms
         private void LoginSuccess()
         {
             _account.SetLogin();
-            MessageBox.Show($"{_account.Username}, You are login. Now you can create cart with items and compare prices.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            if (_account.Nickname.Equals("Admin"))
+            {
+                _account.Permission = "Admin";
+                _mainForm.SetAccountPermission("admin");
+                MessageBox.Show($"{_account.Username}, You are login as admin.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                _account.Permission = "client";
+                _mainForm.SetAccountPermission("client");
+                MessageBox.Show($"{_account.Username}, You are login as client. Now you can create cart with items and compare prices.", "Login", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
             UpdateMainFormAfterLogin();
             Dispose();
         }

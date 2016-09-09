@@ -93,7 +93,7 @@ namespace FinalLab
         private Store DecodeStore(XElement storeElement, string chainId)
         {
             var storeId = $"{chainId}_{DecodeStoreId(storeElement)}";
-            ; var storeName = DecodeStoreName(storeElement);
+            var storeName = DecodeStoreName(storeElement);
             var subchainName = DecodeStoreSubchainName(storeElement);
             var address = DecodeStoreAddress(storeElement);
             var city = DecodeStoreCity(storeElement);
@@ -109,7 +109,7 @@ namespace FinalLab
 
             return new Store()
             {
-                StoreId = $"{chainId}{storeId}",
+                StoreId = storeId,
                 ChainId = chainId,
                 StoreName = storeName,
                 SubchainName = subchainName,

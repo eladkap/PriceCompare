@@ -89,13 +89,20 @@ namespace FinalLab.Interfaces
         /// <returns>Collection of items</returns>
         ICollection<Item> GetItemsByStore(Store store);
 
-        void UpdateCatalogFromXmlFiles();
+        /// <summary>
+        /// Returns number of inserted store records.
+        /// </summary>
+        int UpdateChainStores();
 
-        void UpdateChainStores();
+        /// <summary>
+        /// Returns number of inserted item records.
+        /// </summary>
+        int UpdateItems();
 
-        void UpdateItems();
-
-        void UpdatePrices();
+        /// <summary>
+        /// Returns number of inserted price records.
+        /// </summary>
+        int UpdatePrices();
 
         ICollection<Price> GetItemPricesOrderByUpdateTime(Item item);
 
