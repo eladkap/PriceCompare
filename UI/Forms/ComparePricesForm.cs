@@ -175,8 +175,8 @@ namespace FinalLab.Forms
         {
             flowLayoutPanel_comparison.FlowDirection = FlowDirection.TopDown;
             flowLayoutPanel_comparison.AutoScroll = true;
-            flowLayoutPanel_comparison.Height = 600;
-            flowLayoutPanel_comparison.Width = 700;
+            flowLayoutPanel_comparison.Height = 700;
+            flowLayoutPanel_comparison.Width = 800;
             flowLayoutPanel_comparison.AutoSize = true;
             flowLayoutPanel_comparison.AutoScroll = true;
         }
@@ -188,39 +188,30 @@ namespace FinalLab.Forms
             flowLayoutPanel_comparison.Controls.Add(compareItemPanel.Panel);
         }
 
-        private void SetTotalCostsLabel(string text, double totalCost)
+        private void SetTotalCostsLabel(Label lbl_totalCost, double totalCost)
         {
-            Label lbl_totalCost = new Label();
-            lbl_totalCost.Text = text;
-            lbl_totalCost.Font = new Font("Arial", 16, FontStyle.Bold);
-            Label lbl_totalCostValue = new Label();
-            lbl_totalCostValue.Text = $"{totalCost} [{Constants.Currency}]";
-            lbl_totalCostValue.Font = new Font("Arial", 16, FontStyle.Bold);
-            FlowLayoutPanel totalCostPanel = new FlowLayoutPanel();
-            totalCostPanel.FlowDirection = FlowDirection.LeftToRight;
-            totalCostPanel.Controls.Add(lbl_totalCost);
-            totalCostPanel.Controls.Add(lbl_totalCostValue);
-            flowLayoutPanel_comparison.Controls.Add(totalCostPanel);
+            lbl_totalCost.Text = $"Total: {totalCost} [{Constants.Currency}]";
+            lbl_totalCost.Text = $"Total: {totalCost} [{Constants.Currency}]";
         }
 
-        private void AddComparisonTotalCost1()
+        private void SetComparisonTotalCost1()
         {
             double totalCost1 = _catalogManager.CalculateCartTotalCostByStore(_cart, _store1);
             totalCost1 = Math.Round(totalCost1, Constants.CostProximity);
-            SetTotalCostsLabel("Total Cost 1", totalCost1);
+            SetTotalCostsLabel(lbl_totalCost1, totalCost1);
         }
 
-        private void AddComparisonTotalCost2()
+        private void SetComparisonTotalCost2()
         {
             double totalCost2 = _catalogManager.CalculateCartTotalCostByStore(_cart, _store2);
             totalCost2 = Math.Round(totalCost2, Constants.CostProximity);
-            SetTotalCostsLabel("Total Cost 2", totalCost2);
+            SetTotalCostsLabel(lbl_totalCost2, totalCost2);
         }
 
         private void AddComparisonTotalCosts()
         {
-            AddComparisonTotalCost1();
-            AddComparisonTotalCost2();
+            SetComparisonTotalCost1();
+            SetComparisonTotalCost2();
         }
 
         private void LayoutComparisonItems()

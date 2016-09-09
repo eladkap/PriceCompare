@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Xml.Linq;
 
@@ -7,75 +8,137 @@ namespace FinalLab
 {
     public class XmlDecoder
     {
-        /*
-        public Chain DeserializeChain(string path)
-        {
-            try
-            {
-                XmlSerializer xmlSerializer = new XmlSerializer(typeof(Chain));
-                StreamReader reader = new StreamReader(path);
-                Chain chain = (Chain)xmlSerializer.Deserialize(reader);
-                return chain;
-            }
-            catch (Exception e)
-            {
-                System.Diagnostics.Debug.WriteLine(e.Message);
-                throw;
-            }
-        }
-        */
-        public string GetChainIdFromStoreFile(XElement xmlRoot)
+        //----------------------------------------Chain---------------------------------------------------------//
+        private string DecodeChainId(XElement xmlRoot)
         {
             var chainNode = (from node in xmlRoot.Descendants()
                              where node.Name.ToString().ToLower().Equals("chainid")
                              select node).FirstOrDefault();
-            if (chainNode == null)
-            {
-                return "None";
-            }
             return chainNode.Value;
         }
 
-        // Decode stores from file Stores.xml
-        public IEnumerable<Store> GetAllStoresOfChain(XElement xmlRoot)
+        private string DecodeChainName(XElement xmlRoot)
         {
-            var storesList = from node in xmlRoot.Descendants()
-                             where node.Name.ToString().ToLower().Equals("store")
-                             let storeId = node.Attribute("storeid")
-                             // let storeName = node.Attribute("storeName")
-                             where storeId != null && storeId.Value != null
-                             where String.Equals(storeId.Value, "storeid", StringComparison.OrdinalIgnoreCase)
-                             select new Store()
-                             {
-                                 StoreId = storeId.ToString(),
-                                 // StoreName = storeName.ToString()
-                             };
-            Console.WriteLine(storesList.Count());
-            return storesList.ToList();
+            var chainNode = (from node in xmlRoot.Descendants()
+                             where node.Name.ToString().ToLower().Equals("chainname")
+                             select node).FirstOrDefault();
+            return chainNode.Value;
         }
 
-        public Store DecodeStore(XElement storeElement)
+        public Chain DecodeChain(XElement xmlRoot)
         {
-            return null;
+            var chainId = DecodeChainId(xmlRoot);
+            var chainName = DecodeChainName(xmlRoot);
+            return new Chain()
+            {
+                ChainId = chainId,
+                ChainName = chainName,
+                ChainNameHebrew = chainName,
+                Stores = DecodeStoresElements(xmlRoot, chainId)
+            };
         }
 
-        public Chain DecodeStoresXmlFile(string xmlPath)
+        //----------------------------------------Stores---------------------------------------------------------//
+
+        private IEnumerable<XElement> GetAllStoreElements(XElement xmlRoot)
         {
-            Chain chain = new Chain();
-            XElement xmlRoot = XElement.Load(xmlPath);
-
-            string chainId = GetChainIdFromStoreFile(xmlRoot);
-            Console.WriteLine(chainId);
-
-
-            //IEnumerable<Store> storesList = GetAllStores(xmlRoot);
-            //storesList.ToList().ForEach((store) => Console.WriteLine(store.StoreId));
-
-            chain.ChainId = chainId;
-            return chain;
+            return (from node in xmlRoot.Descendants()
+                    where node.Name.ToString().ToLower().Equals("store")
+                    select node);
         }
 
-        public IEnumerable<Price>  GetAllPricesOfChainStore()
+        private string DecodeStoreField(XElement storeElement, string fieldName)
+        {
+            var storeIdElement = (from node in storeElement.Descendants()
+                                  where node.Name.ToString().ToLower().Equals(fieldName)
+                                  select node).FirstOrDefault();
+            return storeIdElement?.Value;
+        }
+
+        private string DecodeStoreId(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "storeid");
+        }
+
+        private string DecodeStoreName(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "storename");
+        }
+
+        private string DecodeStoreSubchainName(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "subchainname");
+        }
+
+        private string DecodeStoreAddress(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "address");
+        }
+
+        private string DecodeStoreCity(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "city");
+        }
+
+        private string DecodeStoreZipcode(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "zipcode");
+        }
+
+        private string DecodeStoreBikoretNo(XElement storeElement)
+        {
+            return DecodeStoreField(storeElement, "bikoretno");
+        }
+
+        private Store DecodeStore(XElement storeElement, string chainId)
+        {
+            var storeId = $"{chainId}_{DecodeStoreId(storeElement)}";
+            ; var storeName = DecodeStoreName(storeElement);
+            var subchainName = DecodeStoreSubchainName(storeElement);
+            var address = DecodeStoreAddress(storeElement);
+            var city = DecodeStoreCity(storeElement);
+            var zipcode = DecodeStoreZipcode(storeElement);
+
+            int bikoretNoInt = 0;
+            var bikoretNoString = DecodeStoreBikoretNo(storeElement);
+            bool result = int.TryParse(bikoretNoString, out bikoretNoInt);
+            if (!result)
+            {
+                bikoretNoInt = -1;
+            }
+
+            return new Store()
+            {
+                StoreId = $"{chainId}{storeId}",
+                ChainId = chainId,
+                StoreName = storeName,
+                SubchainName = subchainName,
+                City = city,
+                Address = address,
+                Zipcode = zipcode,
+                BikoretNo = bikoretNoInt
+            };
+        }
+
+        public ICollection<Store> DecodeStoresElements(XElement xmlRoot, string chainId)
+        {
+            IEnumerable<XElement> storesElements = GetAllStoreElements(xmlRoot);
+            ICollection<Store> storesList = new Collection<Store>();
+            foreach (XElement storeElement in storesElements)
+            {
+                Store store = DecodeStore(storeElement, chainId);
+                storesList.Add(store);
+            }
+            return storesList;
+        }
+
+        public Chain DecodeChainFromFile(string xmlFilePath)
+        {
+            XElement xmlRoot = XElement.Load(xmlFilePath);
+            return DecodeChain(xmlRoot);
+        }
+
+        public IEnumerable<Price> GetAllPricesOfChainStore()
         {
             return null;
         }

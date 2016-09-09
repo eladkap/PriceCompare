@@ -148,8 +148,6 @@ namespace FinalLab.Engines
             }
         }
 
-
-
         internal ICollection<Store> GetStoresByChainName(string chainNameHebrew)
         {
             using (CatalogContext context = new CatalogContext())
@@ -163,21 +161,11 @@ namespace FinalLab.Engines
             }
         }
 
-        public void UpdateDatabaseFromXmlFiles()
+        public void UpdateCatalogFromXmlFiles()
         {
-            XmlDecoder xmlDecoder = new XmlDecoder();
-            string[] filePaths = filePaths = Directory.GetFiles(Constants.RootDir, "*.xml", SearchOption.AllDirectories);
-            int filesCounter = 0;
-            foreach (var filePath in filePaths)
-            {
-                //Chain chain = xmlDecoder.DeserializeChain(filePath);
-                //InsertChainDetailsIntoDatabase(chain);
-                filesCounter++;
-                if (filesCounter == Constants.XmlFilesNumber)
-                {
-                    break;
-                }
-            }
+            UpdateChainStores();
+            //UpdateItems();
+            //UpdatePrices();
         }
 
         // use this method for the graph price-time
@@ -354,6 +342,42 @@ namespace FinalLab.Engines
                                   orderby price.UpdateTime
                                   select price);
                 return pricesList.ToList();
+            }
+        }
+
+        internal void UpdatePrices()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void UpdateItems()
+        {
+            throw new NotImplementedException();
+        }
+
+        internal void UpdateChainStores()
+        {
+            XmlDecoder xmlDecoder = new XmlDecoder();
+            string[] filePaths = filePaths = Directory.GetFiles(Constants.XmlStoresDirPath, "Stores*.xml", SearchOption.AllDirectories);
+            int filesCounter = 0;
+            foreach (var filePath in filePaths)
+            {
+                Chain chain = xmlDecoder.DecodeChainFromFile(filePath);
+                InsertChainIntoCatalog(chain);
+                filesCounter++;
+                if (filesCounter == Constants.XmlFilesNumber)
+                {
+                    break;
+                }
+            }
+        }
+
+        public void InsertChainIntoCatalog(Chain chain)
+        {
+            using (CatalogContext context = new CatalogContext())
+            {
+                context.Chains.Add(chain);
+                context.SaveChangesAsync();
             }
         }
     }

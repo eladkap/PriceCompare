@@ -15,6 +15,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UI", "UI\UI.csproj", "{E940
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GoogleAccess", "GoogleAccess\GoogleAccess.csproj", "{B9F10FF5-85DB-43DC-8B58-88449BB1C1FE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tester", "Tester\Tester.csproj", "{C8F6ACE6-2F18-437F-AE00-EBF863AE37DC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -45,6 +47,10 @@ Global
 		{B9F10FF5-85DB-43DC-8B58-88449BB1C1FE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B9F10FF5-85DB-43DC-8B58-88449BB1C1FE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B9F10FF5-85DB-43DC-8B58-88449BB1C1FE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C8F6ACE6-2F18-437F-AE00-EBF863AE37DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C8F6ACE6-2F18-437F-AE00-EBF863AE37DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C8F6ACE6-2F18-437F-AE00-EBF863AE37DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C8F6ACE6-2F18-437F-AE00-EBF863AE37DC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

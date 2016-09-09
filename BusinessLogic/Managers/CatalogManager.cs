@@ -75,7 +75,7 @@ namespace FinalLab.Managers
 
         public void InsertChainIntoCatalog(Chain chain)
         {
-            throw new NotImplementedException();
+            catalogEngine.InsertChainIntoCatalog(chain);
         }
 
         public void InsertItemIntoCatalog(Item item)
@@ -91,11 +91,6 @@ namespace FinalLab.Managers
         public void InsertStoreIntoCatalog(Store store)
         {
             throw new NotImplementedException();
-        }
-
-        public void UpdateCatalogFromXmlFiles()
-        {
-            catalogEngine.UpdateDatabaseFromXmlFiles();
         }
 
         public ICollection<Price> GetItemPricesOrderByUpdateTime(Item item)
@@ -156,6 +151,26 @@ namespace FinalLab.Managers
         public ICollection<Price> GetAllPricesByItemAndStore(Item item, Store store)
         {
             return catalogEngine.GetAllPricesByItemAndStore(item, store);
+        }
+
+        public void UpdateChainStores()
+        {
+            catalogEngine.UpdateChainStores();
+        }
+
+        public void UpdateItems()
+        {
+            catalogEngine.UpdateItems();
+        }
+
+        public void UpdatePrices()
+        {
+            catalogEngine.UpdatePrices();
+        }
+
+        public void UpdateCatalogFromXmlFiles()
+        {
+            catalogEngine.UpdateCatalogFromXmlFiles();
         }
     }
 }

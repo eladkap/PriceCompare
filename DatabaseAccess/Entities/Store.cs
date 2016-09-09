@@ -60,5 +60,10 @@ namespace FinalLab
         {
             return base.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return $"{StoreId} {StoreName} {ChainId} {SubchainName} {BikoretNo} {City} {Address} {Zipcode}";
+        }
     }
 }

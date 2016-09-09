@@ -183,12 +183,12 @@ namespace FinalLab
             FlowLayoutPanel panelParent = (FlowLayoutPanel)senderBtn.Parent;
             Item item = GetItemFromPanel(panelParent);
             _store = GetStoreFromPanel(panelParent);
-            ViewPriceGraph(item,_store);
+            ViewPriceGraph(item, _store);
         }
 
         private void ViewPriceGraph(Item item, Store store)
         {
-            PriceGraphForm priceGraphForm = new PriceGraphForm(item,store);
+            PriceGraphForm priceGraphForm = new PriceGraphForm(item, store);
             priceGraphForm.CreatePriceGraph();
             priceGraphForm.ShowDialog();
         }

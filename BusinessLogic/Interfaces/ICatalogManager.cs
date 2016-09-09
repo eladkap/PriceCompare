@@ -91,6 +91,12 @@ namespace FinalLab.Interfaces
 
         void UpdateCatalogFromXmlFiles();
 
+        void UpdateChainStores();
+
+        void UpdateItems();
+
+        void UpdatePrices();
+
         ICollection<Price> GetItemPricesOrderByUpdateTime(Item item);
 
         Price GetItemUpdatedPriceByStore(Item item, Store store);
