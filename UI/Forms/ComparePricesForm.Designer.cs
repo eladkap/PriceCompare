@@ -79,6 +79,8 @@
             // 
             // comboBox_store1
             // 
+            this.comboBox_store1.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox_store1.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox_store1.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.comboBox_store1.FormattingEnabled = true;
             this.comboBox_store1.Location = new System.Drawing.Point(615, 219);
@@ -89,6 +91,8 @@
             // 
             // comboBox_store2
             // 
+            this.comboBox_store2.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox_store2.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox_store2.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.comboBox_store2.FormattingEnabled = true;
             this.comboBox_store2.Location = new System.Drawing.Point(1032, 219);

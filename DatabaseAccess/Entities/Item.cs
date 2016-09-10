@@ -73,5 +73,10 @@ namespace FinalLab
         {
             return base.GetHashCode();
         }
+
+        public override string ToString()
+        {
+            return $"{ItemCode} {ItemType} {ItemName} {ManufacturerName} {ManufacturerCountry} {ManufacturerItemDescription} {IsWeighted}";
+        }
     }
 }

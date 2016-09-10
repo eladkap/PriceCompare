@@ -71,6 +71,8 @@ namespace FinalLab.Engines
             }
         }
 
+
+
         internal ICollection<Store> GetStoresByCity(string city)
         {
             using (CatalogContext context = new CatalogContext())
@@ -107,6 +109,16 @@ namespace FinalLab.Engines
                 var citiesCollection = (from store in context.Stores
                                         select store.City).Distinct();
                 return citiesCollection.ToList();
+            }
+        }
+
+        public ICollection<Item> GetAllItems()
+        {
+            using (CatalogContext context = new CatalogContext())
+            {
+                var itemsCollection = from item in context.Items
+                                      select item;
+                return itemsCollection.ToList();
             }
         }
 
@@ -338,34 +350,21 @@ namespace FinalLab.Engines
             }
         }
 
-        internal int UpdatePrices()
+        internal int UpdatePrices(string priceFullXmlFilePath)
         {
             return 0;
         }
 
-        internal int UpdateItems()
+        internal int UpdateItems(string priceFullXmlFilePath)
         {
             return 0;
         }
 
-        internal int UpdateChainStores()
+        internal int UpdateChainStores(string storesXmlFilePath)
         {
-            XmlDecoder xmlDecoder = new XmlDecoder();
-            string[] filePaths = filePaths = Directory.GetFiles(Constants.XmlStoresDirPath, "*.xml", SearchOption.AllDirectories);
-            int filesCounter = 0;
-            int storeNum = 0;
-            foreach (var filePath in filePaths)
-            {
-                //string filePath1 = @"D:\files\Stores\Stores7290027600007-000-201609060827.xml";
-                string filePath1 = @"D:\files\Stores\Stores7290873255550-201609092005.xml";
-                Chain chain = xmlDecoder.DecodeChainFromFile(filePath1);
-                storeNum += InsertChainStoresIntoCatalog(chain);
-                filesCounter++;
-                if (filesCounter == Constants.XmlFilesNumber)
-                {
-                    break;
-                }
-            }
+            StoresXmlDecoder xmlDecoder = new StoresXmlDecoder();
+            Chain chain = xmlDecoder.DecodeChainFromFile(storesXmlFilePath);
+            int storeNum = InsertChainStoresIntoCatalog(chain);
             return storeNum;
         }
 

@@ -53,6 +53,11 @@ namespace FinalLab.Managers
             return catalogEngine.GetItemsByName(itemName);
         }
 
+        public ICollection<Item> GetAllItems()
+        {
+            return catalogEngine.GetAllItems();
+        }
+
         public ICollection<Tuple<Item, Price, Store>> GetAllUpdatedPricesByItemName(string itemName)
         {
             return catalogEngine.GetAllUpdatedPricesByItemName(itemName);
@@ -153,19 +158,19 @@ namespace FinalLab.Managers
             return catalogEngine.GetAllPricesByItemAndStore(item, store);
         }
 
-        public int UpdateChainStores()
+        public int UpdateChainStores(string storesXmlFilePath)
         {
-            return catalogEngine.UpdateChainStores();
+            return catalogEngine.UpdateChainStores(storesXmlFilePath);
         }
 
-        public int UpdateItems()
+        public int UpdateItems(string priceFullXmlFilePath)
         {
-            return catalogEngine.UpdateItems();
+            return catalogEngine.UpdateItems(priceFullXmlFilePath);
         }
 
-        public int UpdatePrices()
+        public int UpdatePrices(string priceFullXmlFilePath)
         {
-            return catalogEngine.UpdatePrices();
+            return catalogEngine.UpdatePrices(priceFullXmlFilePath);
         }
     }
 }

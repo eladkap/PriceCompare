@@ -6,7 +6,7 @@ using System.Xml.Linq;
 
 namespace FinalLab
 {
-    public class XmlDecoder
+    public class StoresXmlDecoder
     {
         //----------------------------------------Chain---------------------------------------------------------//
         private string DecodeChainId(XElement xmlRoot)
@@ -49,10 +49,10 @@ namespace FinalLab
 
         private string DecodeStoreField(XElement storeElement, string fieldName)
         {
-            var storeIdElement = (from node in storeElement.Descendants()
+            var fieldElement = (from node in storeElement.Descendants()
                                   where node.Name.ToString().ToLower().Equals(fieldName)
                                   select node).FirstOrDefault();
-            return storeIdElement?.Value;
+            return fieldElement?.Value;
         }
 
         private string DecodeStoreId(XElement storeElement)
@@ -135,12 +135,11 @@ namespace FinalLab
         public Chain DecodeChainFromFile(string xmlFilePath)
         {
             XElement xmlRoot = XElement.Load(xmlFilePath);
+            if (xmlRoot == null)
+            {
+                return null;
+            }
             return DecodeChain(xmlRoot);
-        }
-
-        public IEnumerable<Price> GetAllPricesOfChainStore()
-        {
-            return null;
         }
     }
 }

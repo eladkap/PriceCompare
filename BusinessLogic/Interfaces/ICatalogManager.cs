@@ -80,6 +80,8 @@ namespace FinalLab.Interfaces
         /// <param name="name">Name</param>
         ICollection<Item> GetItemsByName(string name);
 
+        ICollection<Item> GetAllItems();
+
         ICollection<Tuple<Item, Price, Store>> GetAllUpdatedPricesByItemName(string itemName);
 
         /// <summary>
@@ -92,17 +94,17 @@ namespace FinalLab.Interfaces
         /// <summary>
         /// Returns number of inserted store records.
         /// </summary>
-        int UpdateChainStores();
+        int UpdateChainStores(string storesXmlFilePath);
 
         /// <summary>
         /// Returns number of inserted item records.
         /// </summary>
-        int UpdateItems();
+        int UpdateItems(string priceFullXmlFilePath);
 
         /// <summary>
         /// Returns number of inserted price records.
         /// </summary>
-        int UpdatePrices();
+        int UpdatePrices(string priceFullXmlFilePath);
 
         ICollection<Price> GetItemPricesOrderByUpdateTime(Item item);
 

@@ -34,6 +34,8 @@
             this.exitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.catalogToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.updateToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.storesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.priceFullToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.myCartToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.priceCompareToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -101,10 +103,26 @@
             // 
             // updateToolStripMenuItem
             // 
+            this.updateToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.storesToolStripMenuItem,
+            this.priceFullToolStripMenuItem});
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.updateToolStripMenuItem.Text = "Update";
-            this.updateToolStripMenuItem.Click += new System.EventHandler(this.updateToolStripMenuItem_Click);
+            // 
+            // storesToolStripMenuItem
+            // 
+            this.storesToolStripMenuItem.Name = "storesToolStripMenuItem";
+            this.storesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.storesToolStripMenuItem.Text = "Stores";
+            this.storesToolStripMenuItem.Click += new System.EventHandler(this.storesToolStripMenuItem_Click);
+            // 
+            // priceFullToolStripMenuItem
+            // 
+            this.priceFullToolStripMenuItem.Name = "priceFullToolStripMenuItem";
+            this.priceFullToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.priceFullToolStripMenuItem.Text = "PriceFull";
+            this.priceFullToolStripMenuItem.Click += new System.EventHandler(this.priceFullToolStripMenuItem_Click);
             // 
             // cartToolStripMenuItem
             // 
@@ -184,6 +202,8 @@
             // 
             // txt_searchItemName
             // 
+            this.txt_searchItemName.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.txt_searchItemName.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.CustomSource;
             this.txt_searchItemName.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.txt_searchItemName.Location = new System.Drawing.Point(402, 212);
             this.txt_searchItemName.Name = "txt_searchItemName";
@@ -202,6 +222,8 @@
             // 
             // comboBox_chain
             // 
+            this.comboBox_chain.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox_chain.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox_chain.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.comboBox_chain.FormattingEnabled = true;
             this.comboBox_chain.Location = new System.Drawing.Point(402, 163);
@@ -212,6 +234,8 @@
             // 
             // comboBox_store
             // 
+            this.comboBox_store.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox_store.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox_store.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.comboBox_store.FormattingEnabled = true;
             this.comboBox_store.Location = new System.Drawing.Point(676, 163);
@@ -314,6 +338,8 @@
             // 
             // comboBox_city
             // 
+            this.comboBox_city.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
+            this.comboBox_city.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
             this.comboBox_city.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
             this.comboBox_city.FormattingEnabled = true;
             this.comboBox_city.Location = new System.Drawing.Point(402, 117);
@@ -399,6 +425,8 @@
         private System.Windows.Forms.Button btn_comparePrices;
         private System.Windows.Forms.ComboBox comboBox_city;
         private System.Windows.Forms.Label lbl_chooseCity;
+        private System.Windows.Forms.ToolStripMenuItem storesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem priceFullToolStripMenuItem;
     }
 }
 
