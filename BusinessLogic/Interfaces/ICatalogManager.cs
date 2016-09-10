@@ -1,9 +1,11 @@
 ﻿using FinalLab.Entities;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 
 namespace FinalLab.Interfaces
 {
@@ -15,7 +17,7 @@ namespace FinalLab.Interfaces
         /// Insert new chain into catalog or update its properties if already exists.
         /// </summary>
         /// <param name="chain">Chain</param>
-        void InsertChainIntoCatalog(Chain chain);
+        void InsertChainIntoCatalog(Chain chain, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar);
 
         /// <summary>
         /// Insert new store into catalog or update its properties if already exists.
@@ -94,7 +96,7 @@ namespace FinalLab.Interfaces
         /// <summary>
         /// Returns number of inserted store records.
         /// </summary>
-        int UpdateChainStores(string storesXmlFilePath);
+        int UpdateChainStores(string storesXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar);
 
         /// <summary>
         /// Returns number of inserted item records.

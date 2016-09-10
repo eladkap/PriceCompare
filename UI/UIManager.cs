@@ -25,16 +25,6 @@ namespace FinalLab
             chainsList.ToList().ForEach((chain) => comboBox_chain.Items.Add(chain.ChainNameHebrew));
         }
 
-        public void LoadAllCities(ComboBox comboBox_city, bool addAllCities)
-        {
-            ICollection<string> citiesList = _catalogManager.GetAllCities();
-            if (addAllCities)
-            {
-                comboBox_city.Items.Add("All Cities");
-            }
-            citiesList.ToList().ForEach((city) => comboBox_city.Items.Add(city));
-        }
-
         public void LoadStoresByChain(string chainName, ComboBox comboBox_store, bool addAllStores)
         {
             ICollection<Store> storesList = _catalogManager.GetStoresByChainName(chainName);

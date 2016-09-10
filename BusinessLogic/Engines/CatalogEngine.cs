@@ -2,9 +2,13 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows.Forms;
 using XmlAccess;
 
 namespace FinalLab.Engines
@@ -388,16 +392,17 @@ namespace FinalLab.Engines
             }
         }
 
-        internal int UpdateChainStores(string storesXmlFilePath)
+        internal int UpdateChainStores(string storesXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
             StoresXmlDecoder xmlDecoder = new StoresXmlDecoder();
             Chain chain = xmlDecoder.DecodeChainFromFile(storesXmlFilePath);
-            int storeNum = InsertChainStoresIntoCatalog(chain);
+            int storeNum = InsertChainStoresIntoCatalog(chain, worker, e, progressBar);
             return storeNum;
         }
 
-        public int InsertChainStoresIntoCatalog(Chain chain)
+        public int InsertChainStoresIntoCatalog(Chain chain, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
+            int totalStores = chain.Stores.Count();
             using (CatalogContext context = new CatalogContext())
             {
                 bool chainExists = context.Chains.Any(currChain => currChain.ChainId.Equals(chain.ChainId));
@@ -408,6 +413,20 @@ namespace FinalLab.Engines
                 int storesNum = 0;
                 foreach (var store in chain.Stores)
                 {
+                    // Thread.Sleep(10);
+                    // check if cancel
+                    if (worker != null && worker.CancellationPending)
+                    {
+                        e.Cancel = true;
+                        break;
+                    }
+                    int percentComplete = (int)((storesNum) / (float)(totalStores) * 100);
+
+                    progressBar.Invoke((MethodInvoker)delegate ()
+                    {
+                        progressBar.Value = percentComplete;
+                    });
+
                     bool storeExists = context.Stores.Any(currStore => currStore.StoreId.Equals(store.StoreId));
                     if (!storeExists)
                     {
@@ -415,8 +434,12 @@ namespace FinalLab.Engines
                         storesNum++;
                     }
                 }
-                context.SaveChanges();
-                return storesNum;
+                if (!e.Cancel)
+                {
+                    context.SaveChanges();
+                    return storesNum;
+                }
+                return 0;
             }
         }
     }

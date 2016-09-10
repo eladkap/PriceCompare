@@ -6,6 +6,8 @@ using System.Threading.Tasks;
 using FinalLab.Interfaces;
 using FinalLab.Engines;
 using FinalLab.Entities;
+using System.ComponentModel;
+using System.Windows.Forms;
 
 namespace FinalLab.Managers
 {
@@ -78,9 +80,9 @@ namespace FinalLab.Managers
             return catalogEngine.GetStoresByCity(city);
         }
 
-        public void InsertChainIntoCatalog(Chain chain)
+        public void InsertChainIntoCatalog(Chain chain, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
-            catalogEngine.InsertChainStoresIntoCatalog(chain);
+            catalogEngine.InsertChainStoresIntoCatalog(chain, worker, e, progressBar);
         }
 
         public void InsertItemIntoCatalog(Item item)
@@ -158,9 +160,9 @@ namespace FinalLab.Managers
             return catalogEngine.GetAllPricesByItemAndStore(item, store);
         }
 
-        public int UpdateChainStores(string storesXmlFilePath)
+        public int UpdateChainStores(string storesXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
-            return catalogEngine.UpdateChainStores(storesXmlFilePath);
+            return catalogEngine.UpdateChainStores(storesXmlFilePath, worker, e, progressBar);
         }
 
         public int UpdateItems(string priceFullXmlFilePath)

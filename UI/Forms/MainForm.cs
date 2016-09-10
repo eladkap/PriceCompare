@@ -7,6 +7,7 @@ using FinalLab.Entities;
 using FinalLab.Forms;
 using System.ComponentModel;
 using XmlAccess;
+using System.Threading.Tasks;
 
 namespace FinalLab
 {
@@ -25,7 +26,10 @@ namespace FinalLab
         Account _account;
         Chain _chain;
         Store _store;
-        BackgroundWorker _backgroundWorker;
+
+        // background update arguments
+        string _filePath;
+        string _prefix;
 
         public delegate void ButtonAddToCartClickedEventHandler(object sender, EventArgs e);
         public event ButtonAddToCartClickedEventHandler AddToCartButtonClicked;
@@ -41,7 +45,6 @@ namespace FinalLab
             InitializeCart();
             InitializeFormComponents();
             InitializeMenuItems();
-            _backgroundWorker = new BackgroundWorker();
             WindowState = FormWindowState.Maximized;
         }
 
@@ -69,7 +72,6 @@ namespace FinalLab
         {
             lbl_username.Text = _account.Nickname;
             _uiManager.LoadAllChains(comboBox_chain, true);
-            _uiManager.LoadAllCities(comboBox_city, true);
             LoadAllItems();
         }
 
@@ -93,82 +95,6 @@ namespace FinalLab
             {
                 Close();
             }
-        }
-
-        private void UpdateChainStores(string storesXmlFilePath)
-        {
-            int storesNum = _catalogManager.UpdateChainStores(storesXmlFilePath);
-            MessageBox.Show($"{storesNum} stores were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void UpdateItems(string priceFullXmlFilePath)
-        {
-            int itemsNum = _catalogManager.UpdateItems(priceFullXmlFilePath);
-            MessageBox.Show($"{itemsNum} items were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private void UpdatePrices(string priceFullXmlFilePath)
-        {
-            int pricesNum = _catalogManager.UpdatePrices(priceFullXmlFilePath);
-            MessageBox.Show($"{pricesNum} prices were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        private bool ValidateXmlFile(string filePath)
-        {
-            return XmlValidator.IsValidXmlFile(filePath);
-        }
-
-        private void OpenXmlFile(string prefix)
-        {
-            OpenFileDialog fileDialog = new OpenFileDialog();
-            fileDialog.Filter = $"XML|{prefix}*.xml";
-            if (fileDialog.ShowDialog() == DialogResult.OK)
-            {
-                string filePath = fileDialog.FileName;
-                if (ValidateXmlFile(filePath))
-                {
-                    PerformUpdateCatalog(filePath, prefix);
-                }
-                else
-                {
-                    MessageBox.Show($"Invalid XML file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
-        }
-
-        private void PerformUpdateCatalog(string xmlFilePath, string prefix)
-        {
-            if (prefix.Equals("Stores"))
-            {
-                UpdateChainStores(xmlFilePath);
-            }
-            else if (prefix.Equals("PriceFull"))
-            {
-                UpdateItems(xmlFilePath);
-                UpdatePrices(xmlFilePath);
-            }
-            MessageBox.Show("Catalog was updated successfully.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
-        }
-
-        // do it async!!
-        private void storesToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!ValidateAdmin())
-            {
-                MessageBox.Show("You are not an admin.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                return;
-            }
-            OpenXmlFile("Stores");
-        }
-
-        private void priceFullToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            if (!ValidateAdmin())
-            {
-                MessageBox.Show("You are not an admin.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Hand);
-                return;
-            }
-            OpenXmlFile("PriceFull");
         }
 
         private bool ValidateAdmin()
@@ -213,6 +139,7 @@ namespace FinalLab
             }
         }
 
+        //TODO: add backgroundworker to search items
         private void SearchItems()
         {
             // _backgroundWorker.DoWork += delegate (object s, DoWorkEventArgs args)
@@ -293,8 +220,6 @@ namespace FinalLab
             FlowLayoutPanel panel = LoadItemPanel(item, price, store);
             flowLayoutPanel_items.Controls.Add(panel);
             flowLayoutPanel_items.Refresh();
-            //Invoke((Action)(() => flowLayoutPanel_items.Controls.Add(panel)));
-            //Invoke((Action)(() => flowLayoutPanel_items.Refresh()));
         }
 
         private void SetFlowLayoutPanelItemsProperties()
@@ -512,9 +437,139 @@ namespace FinalLab
             }
         }
 
-        private void comboBox_city_SelectedIndexChanged(object sender, EventArgs e)
-        {
+        //------------------------------------Update database region-----------------------------------------------------------//
 
+        private int UpdateChainStores(string storesXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            int storesNum = _catalogManager.UpdateChainStores(storesXmlFilePath, worker, e, progressBar_update);
+            return storesNum;
+        }
+
+        private int UpdateItems(string priceFullXmlFilePath)
+        {
+            int itemsNum = _catalogManager.UpdateItems(priceFullXmlFilePath);
+            MessageBox.Show($"{itemsNum} items were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return itemsNum;
+        }
+
+        private int UpdatePrices(string priceFullXmlFilePath)
+        {
+            int pricesNum = _catalogManager.UpdatePrices(priceFullXmlFilePath);
+            MessageBox.Show($"{pricesNum} prices were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            return pricesNum;
+        }
+
+        private bool ValidateXmlFile(string filePath)
+        {
+            return XmlValidator.IsValidXmlFile(filePath);
+        }
+
+        private void StartUpdating()
+        {
+            Invoke(new Action(() => progressBar_update.Maximum = 100));
+            Invoke(new Action(() => progressBar_update.Value = 0));
+            Task.Run(() => backgroundWorkerUpdate.RunWorkerAsync());
+        }
+
+        private void OpenXmlFile()
+        {
+            OpenFileDialog fileDialog = new OpenFileDialog();
+            fileDialog.Filter = $"XML|{_prefix}*.xml";
+            if (fileDialog.ShowDialog() == DialogResult.OK)
+            {
+                _filePath = fileDialog.FileName;
+                if (ValidateXmlFile(_filePath))
+                {
+                    StartUpdating();
+                    //PerformUpdateCatalog(filePath, prefix);
+                }
+                else
+                {
+                    MessageBox.Show($"Invalid XML file.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        // background update task
+        private int PerformUpdateCatalog(BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            if (_prefix.Equals("Stores"))
+            {
+                return UpdateChainStores(_filePath, worker, e);
+            }
+            else if (_prefix.Equals("PriceFull"))
+            {
+                return UpdateItems(_filePath) + UpdatePrices(_filePath);
+            }
+            return 0;
+        }
+
+        private void storesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ValidateAdmin())
+            {
+                MessageBox.Show("You are not an admin.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                return;
+            }
+            _prefix = "Stores";
+            OpenXmlFile();
+        }
+
+        private void priceFullToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (!ValidateAdmin())
+            {
+                MessageBox.Show("You are not an admin.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Hand);
+                return;
+            }
+            _prefix = "PriceFull";
+            OpenXmlFile();
+        }
+
+        //-------------------------------------Background Update----------------------------------------------------------//
+
+
+
+        private void btn_cancel_Click(object sender, EventArgs e)
+        {
+            backgroundWorkerUpdate.CancelAsync();
+        }
+
+        private void backgroundWorkerUpdate_DoWork(object sender, DoWorkEventArgs e)
+        {
+            BackgroundWorker worker = sender as BackgroundWorker;
+            e.Result = PerformUpdateCatalog(worker, e);
+        }
+
+        private void btn_cancelUpdate_Click(object sender, EventArgs e)
+        {
+            backgroundWorkerUpdate.CancelAsync();
+        }
+
+        private void backgroundWorkerUpdate_ProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            Invoke((Action)(() => progressBar_update.Value = e.ProgressPercentage));
+            Invoke((Action)(() => lbl_percent.Text = $"{progressBar_update.Value}%"));
+        }
+
+        private void backgroundWorkerUpdate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
+        {
+            progressBar_update.Invoke((MethodInvoker)delegate ()
+            {
+                progressBar_update.Value = 0;
+            });
+            progressBar_update.Value = 0;
+            lbl_percent.Text = "0%";
+            if (!e.Cancelled)
+            {
+                int storesNum = (int)e.Result;
+                MessageBox.Show($"{storesNum} stores were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                MessageBox.Show("Catalog was updated successfully.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else
+            {
+                MessageBox.Show("Catalog was cancelled. No records were Updated.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
         }
     }
 }

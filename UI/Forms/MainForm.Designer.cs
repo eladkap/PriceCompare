@@ -59,8 +59,10 @@
             this.btn_viewCart = new System.Windows.Forms.Button();
             this.lbl_cartSize = new System.Windows.Forms.Label();
             this.btn_comparePrices = new System.Windows.Forms.Button();
-            this.comboBox_city = new System.Windows.Forms.ComboBox();
-            this.lbl_chooseCity = new System.Windows.Forms.Label();
+            this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
+            this.btn_cancelUpdate = new System.Windows.Forms.Button();
+            this.progressBar_update = new System.Windows.Forms.ProgressBar();
+            this.lbl_percent = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_chainLogo)).BeginInit();
             this.SuspendLayout();
@@ -336,40 +338,53 @@
             this.btn_comparePrices.UseVisualStyleBackColor = true;
             this.btn_comparePrices.Click += new System.EventHandler(this.btn_comparePrices_Click);
             // 
-            // comboBox_city
+            // backgroundWorkerUpdate
             // 
-            this.comboBox_city.AutoCompleteMode = System.Windows.Forms.AutoCompleteMode.SuggestAppend;
-            this.comboBox_city.AutoCompleteSource = System.Windows.Forms.AutoCompleteSource.ListItems;
-            this.comboBox_city.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.comboBox_city.FormattingEnabled = true;
-            this.comboBox_city.Location = new System.Drawing.Point(402, 117);
-            this.comboBox_city.Name = "comboBox_city";
-            this.comboBox_city.Size = new System.Drawing.Size(242, 24);
-            this.comboBox_city.TabIndex = 19;
-            this.comboBox_city.Visible = false;
-            this.comboBox_city.SelectedIndexChanged += new System.EventHandler(this.comboBox_city_SelectedIndexChanged);
+            this.backgroundWorkerUpdate.WorkerReportsProgress = true;
+            this.backgroundWorkerUpdate.WorkerSupportsCancellation = true;
+            this.backgroundWorkerUpdate.DoWork += new System.ComponentModel.DoWorkEventHandler(this.backgroundWorkerUpdate_DoWork);
+            this.backgroundWorkerUpdate.ProgressChanged += new System.ComponentModel.ProgressChangedEventHandler(this.backgroundWorkerUpdate_ProgressChanged);
+            this.backgroundWorkerUpdate.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.backgroundWorkerUpdate_RunWorkerCompleted);
             // 
-            // lbl_chooseCity
+            // btn_cancelUpdate
             // 
-            this.lbl_chooseCity.AutoSize = true;
-            this.lbl_chooseCity.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lbl_chooseCity.Location = new System.Drawing.Point(220, 124);
-            this.lbl_chooseCity.Name = "lbl_chooseCity";
-            this.lbl_chooseCity.Size = new System.Drawing.Size(81, 17);
-            this.lbl_chooseCity.TabIndex = 15;
-            this.lbl_chooseCity.Text = "Choose city";
-            this.lbl_chooseCity.Visible = false;
+            this.btn_cancelUpdate.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.btn_cancelUpdate.Location = new System.Drawing.Point(1238, 74);
+            this.btn_cancelUpdate.Name = "btn_cancelUpdate";
+            this.btn_cancelUpdate.Size = new System.Drawing.Size(75, 23);
+            this.btn_cancelUpdate.TabIndex = 19;
+            this.btn_cancelUpdate.Text = "Cancel";
+            this.btn_cancelUpdate.UseVisualStyleBackColor = true;
+            this.btn_cancelUpdate.Click += new System.EventHandler(this.btn_cancelUpdate_Click);
+            // 
+            // progressBar_update
+            // 
+            this.progressBar_update.Location = new System.Drawing.Point(786, 74);
+            this.progressBar_update.Name = "progressBar_update";
+            this.progressBar_update.Size = new System.Drawing.Size(403, 23);
+            this.progressBar_update.TabIndex = 20;
+            // 
+            // lbl_percent
+            // 
+            this.lbl_percent.AutoSize = true;
+            this.lbl_percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
+            this.lbl_percent.Location = new System.Drawing.Point(961, 77);
+            this.lbl_percent.Name = "lbl_percent";
+            this.lbl_percent.Size = new System.Drawing.Size(28, 17);
+            this.lbl_percent.TabIndex = 21;
+            this.lbl_percent.Text = "0%";
             // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1362, 585);
-            this.Controls.Add(this.comboBox_city);
+            this.Controls.Add(this.lbl_percent);
+            this.Controls.Add(this.progressBar_update);
+            this.Controls.Add(this.btn_cancelUpdate);
             this.Controls.Add(this.btn_comparePrices);
             this.Controls.Add(this.lbl_cartSize);
             this.Controls.Add(this.btn_viewCart);
-            this.Controls.Add(this.lbl_chooseCity);
             this.Controls.Add(this.lbl_chooseChainStore);
             this.Controls.Add(this.lbl_resultsNum);
             this.Controls.Add(this.pictureBox_chainLogo);
@@ -423,10 +438,12 @@
         private System.Windows.Forms.Button btn_viewCart;
         private System.Windows.Forms.Label lbl_cartSize;
         private System.Windows.Forms.Button btn_comparePrices;
-        private System.Windows.Forms.ComboBox comboBox_city;
-        private System.Windows.Forms.Label lbl_chooseCity;
         private System.Windows.Forms.ToolStripMenuItem storesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem priceFullToolStripMenuItem;
+        private System.ComponentModel.BackgroundWorker backgroundWorkerUpdate;
+        private System.Windows.Forms.Button btn_cancelUpdate;
+        private System.Windows.Forms.ProgressBar progressBar_update;
+        private System.Windows.Forms.Label lbl_percent;
     }
 }
 
