@@ -53,7 +53,7 @@ namespace FinalLab
         public override bool Equals(object obj)
         {
             Store storeObj = (Store)obj;
-            return StoreId.Equals(storeObj.StoreId);
+            return StoreId.Equals(storeObj.StoreId) && ChainId.Equals(storeObj.ChainId);
         }
 
         public override int GetHashCode()

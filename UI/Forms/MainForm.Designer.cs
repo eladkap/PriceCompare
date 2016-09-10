@@ -107,20 +107,20 @@
             this.storesToolStripMenuItem,
             this.priceFullToolStripMenuItem});
             this.updateToolStripMenuItem.Name = "updateToolStripMenuItem";
-            this.updateToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.updateToolStripMenuItem.Size = new System.Drawing.Size(112, 22);
             this.updateToolStripMenuItem.Text = "Update";
             // 
             // storesToolStripMenuItem
             // 
             this.storesToolStripMenuItem.Name = "storesToolStripMenuItem";
-            this.storesToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.storesToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.storesToolStripMenuItem.Text = "Stores";
             this.storesToolStripMenuItem.Click += new System.EventHandler(this.storesToolStripMenuItem_Click);
             // 
             // priceFullToolStripMenuItem
             // 
             this.priceFullToolStripMenuItem.Name = "priceFullToolStripMenuItem";
-            this.priceFullToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.priceFullToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.priceFullToolStripMenuItem.Text = "PriceFull";
             this.priceFullToolStripMenuItem.Click += new System.EventHandler(this.priceFullToolStripMenuItem_Click);
             // 

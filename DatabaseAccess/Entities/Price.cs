@@ -27,19 +27,26 @@ namespace FinalLab
         [Column("allow_discount")]
         public bool AllowDiscount { get; set; }
 
+        [NotMapped]
         public virtual Store Store { get; set; }
 
+        [NotMapped]
         public virtual Item Item { get; set; }
 
         public override bool Equals(object obj)
         {
             Price priceObj = (Price)obj;
-            return Store.Equals(priceObj.Store) && Item.Equals(priceObj.Item) && UpdateTime.Equals(priceObj.UpdateTime);
+            return StoreId.Equals(priceObj.StoreId) && ItemCode.Equals(priceObj.ItemCode) && UpdateTime.Equals(priceObj.UpdateTime);
         }
 
         public override int GetHashCode()
         {
             return base.GetHashCode();
+        }
+
+        public override string ToString()
+        {
+            return $"{StoreId} {ItemCode} {UpdateTime} {PriceValue} {AllowDiscount}";
         }
     }
 }

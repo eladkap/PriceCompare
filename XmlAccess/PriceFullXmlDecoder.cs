@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using FinalLab;
 using System.Xml.Linq;
 using System.Collections.ObjectModel;
+using Utilities;
 
 namespace XmlAccess
 {
@@ -24,7 +25,7 @@ namespace XmlAccess
 
         private ICollection<Item> DecodeItemsElements(XElement xmlRoot)
         {
-            IEnumerable<XElement> itemsElements = GetAllitemElements(xmlRoot);
+            IEnumerable<XElement> itemsElements = GetAllItemElements(xmlRoot);
             ICollection<Item> itemsList = new Collection<Item>();
             foreach (XElement itemElement in itemsElements)
             {
@@ -64,116 +65,128 @@ namespace XmlAccess
             };
         }
 
-        private IEnumerable<XElement> GetAllitemElements(XElement xmlRoot)
+        private IEnumerable<XElement> GetAllItemElements(XElement xmlRoot)
         {
             return (from node in xmlRoot.Descendants()
                     where node.Name.ToString().ToLower().Equals("item") || node.Name.ToString().ToLower().Equals("product")
                     select node);
         }
 
-        private string DecodeItemField(XElement itemElement, string fieldName)
-        {
-            var fieldElement = (from node in itemElement.Descendants()
-                                where node.Name.ToString().ToLower().Equals(fieldName)
-                                select node).FirstOrDefault();
-            return fieldElement?.Value;
-        }
-
         private string DecodeItemCode(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "itemcode");
+            return FieldConverter.DecodeItemField(itemElement, "itemcode");
         }
 
         private string DecodeItemName(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "itemname");
+            return FieldConverter.DecodeItemField(itemElement, "itemname");
         }
 
         private string DecodeManufacturerName(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "manufacturername");
+            return FieldConverter.DecodeItemField(itemElement, "manufacturername");
         }
 
         private string DecodeManufacturerCountry(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "manufacturercountry");
+            return FieldConverter.DecodeItemField(itemElement, "manufacturercountry");
         }
 
         private string DecodeManufacturerItemDescription(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "manufactureritemdescription");
+            return FieldConverter.DecodeItemField(itemElement, "manufactureritemdescription");
         }
 
         private string DecodeUnitQty(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "unitqty");
+            return FieldConverter.DecodeItemField(itemElement, "unitqty");
         }
 
         private string DecodeUnitOfMeasure(XElement itemElement)
         {
-            return DecodeItemField(itemElement, "unitofmeasure");
+            return FieldConverter.DecodeItemField(itemElement, "unitofmeasure");
         }
 
         private int DecodeItemType(XElement itemElement)
         {
-            return DecodeItemFieldInt(itemElement, "itemtype");
+            return FieldConverter.DecodeItemFieldInt(itemElement, "itemtype");
         }
 
         private int DecodeQtyInPackage(XElement itemElement)
         {
-            return DecodeItemFieldInt(itemElement, "qtyinpackage");
+            return FieldConverter.DecodeItemFieldInt(itemElement, "qtyinpackage");
         }
 
         private float DecodeQuantity(XElement itemElement)
         {
-            return DecodeItemFieldFloat(itemElement, "quantity");
+            return FieldConverter.DecodeItemFieldFloat(itemElement, "quantity");
         }
 
         private bool DecodeIsWeighted(XElement itemElement)
         {
-            return DecodeItemFieldBool(itemElement, "isweighted");
+            return FieldConverter.DecodeItemFieldBool(itemElement, "isweighted");
         }
 
         //-------------------------Helper methods for converting db fields string to int, bool ,float--------------------------//
 
-        private int DecodeItemFieldInt(XElement itemElement, string fieldName)
-        {
-            var fieldValueString = DecodeItemField(itemElement, fieldName);
-            if (fieldValueString == null)
-            {
-                return default(int);
-            }
-            int fieldValueInt = default(int);
-            bool result = int.TryParse(fieldValueString, out fieldValueInt);
-            return fieldValueInt;
-        }
-
-        private bool DecodeItemFieldBool(XElement itemElement, string fieldName)
-        {
-            var fieldValueString = DecodeItemField(itemElement, fieldName);
-            if (fieldValueString == null)
-            {
-                return default(bool);
-            }
-            bool fieldValueBool = default(bool);
-            bool result = bool.TryParse(fieldValueString, out fieldValueBool);
-            return fieldValueBool;
-        }
-
-        private float DecodeItemFieldFloat(XElement itemElement, string fieldName)
-        {
-            var fieldValueString = DecodeItemField(itemElement, fieldName);
-            if (fieldValueString == null)
-            {
-                return default(float);
-            }
-            float fieldValueFloat = default(float);
-            bool result = float.TryParse(fieldValueString, out fieldValueFloat);
-            return fieldValueFloat;
-        }
-
 
 
         //----------------------------------------Price---------------------------------------------------------//
+
+        public ICollection<Price> DecodePricesFromFile(string priceFullXmlFilePath)
+        {
+            XElement xmlRoot = XElement.Load(priceFullXmlFilePath);
+            if (xmlRoot == null)
+            {
+                return null;
+            }
+            return DecodePricesElements(xmlRoot);
+        }
+
+        private ICollection<Price> DecodePricesElements(XElement xmlRoot)
+        {
+            string storeId = $"{DecodeChainId(xmlRoot)}_{DecodeStoreId(xmlRoot)}";
+            IEnumerable<XElement> itemElements = GetAllItemElements(xmlRoot);
+            ICollection<Price> pricesList = new Collection<Price>();
+            foreach (XElement itemElement in itemElements)
+            {
+                Price price = DecodePrice(itemElement, storeId);
+                pricesList.Add(price);
+            }
+            return pricesList;
+        }
+
+        private Price DecodePrice(XElement itemElement, string storeId)
+        {
+            string itemCode = DecodeItemCode(itemElement);
+            float itemPrice = FieldConverter.DecodeItemFieldFloat(itemElement, "itemprice");
+            DateTime updateTime = FieldConverter.DecodeItemFieldDateTime(itemElement, "priceupdatedate");
+            bool allowDiscount = FieldConverter.DecodeItemFieldBool(itemElement, "allowdiscount");
+            return new Price()
+            {
+                StoreId = storeId,
+                ItemCode = itemCode,
+                PriceValue = itemPrice,
+                UpdateTime = updateTime,
+                AllowDiscount = allowDiscount
+            };
+        }
+
+        // helper methods to decode from PriceFull storeId and chainId// 
+        private string DecodeChainId(XElement xmlRoot)
+        {
+            var chainNode = (from node in xmlRoot.Descendants()
+                             where node.Name.ToString().ToLower().Equals("chainid")
+                             select node).FirstOrDefault();
+            return chainNode.Value;
+        }
+
+        private string DecodeStoreId(XElement xmlRoot)
+        {
+            var storeNode = (from node in xmlRoot.Descendants()
+                             where node.Name.ToString().ToLower().Equals("storeid")
+                             select node).FirstOrDefault();
+            return storeNode.Value;
+        }
     }
 }

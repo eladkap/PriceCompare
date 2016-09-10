@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.Data.SqlClient;
 using System.IO;
 using System.Linq;
+using XmlAccess;
 
 namespace FinalLab.Engines
 {
@@ -46,32 +47,6 @@ namespace FinalLab.Engines
                         select item).FirstOrDefault();
             }
         }
-
-        private void PerformQuery(SqlCommand sqlCmd)
-        {
-            _connector.ConnectToDatabase();
-            using (SqlTransaction transaction = _connector.Connection.BeginTransaction())
-            {
-                try
-                {
-                    sqlCmd.Connection = _connector.Connection;
-                    sqlCmd.ExecuteNonQuery(); // async
-                    transaction.Commit();
-                }
-                catch (Exception e)
-                {
-                    transaction.Rollback();
-                    System.Diagnostics.Debug.WriteLine(e.Message);
-                    throw;
-                }
-                finally
-                {
-                    _connector.DisconnectFromDatabase();
-                }
-            }
-        }
-
-
 
         internal ICollection<Store> GetStoresByCity(string city)
         {
@@ -352,12 +327,65 @@ namespace FinalLab.Engines
 
         internal int UpdatePrices(string priceFullXmlFilePath)
         {
-            return 0;
+            PriceFullXmlDecoder xmlDecoder = new PriceFullXmlDecoder();
+            ICollection<Price> pricesList = xmlDecoder.DecodePricesFromFile(priceFullXmlFilePath);
+            int pricesNum = InsertPricesIntoCatalog(pricesList);
+            return pricesNum;
         }
 
         internal int UpdateItems(string priceFullXmlFilePath)
         {
-            return 0;
+            PriceFullXmlDecoder xmlDecoder = new PriceFullXmlDecoder();
+            ICollection<Item> itemsList = xmlDecoder.DecodeItemsFromFile(priceFullXmlFilePath);
+            int itemsNum = InsertItemsIntoCatalog(itemsList);
+            return itemsNum;
+        }
+
+        private int InsertItemsIntoCatalog(ICollection<Item> itemsList)
+        {
+            using (CatalogContext context = new CatalogContext())
+            {
+                int itemsNum = 0;
+                foreach (var item in itemsList)
+                {
+                    bool itemExists = context.Items.Any(currItem => currItem.ItemCode.Equals(item.ItemCode));
+                    if (!itemExists && item.ItemType == 1) // only regular products and not vegetables or fruits
+                    {
+                        context.Items.Add(item);
+                        itemsNum++;
+                        if (itemsNum == Constants.MaxItemsToUpdate)
+                        {
+                            break;
+                        }
+                    }
+                }
+                context.SaveChanges();
+                return itemsNum;
+            }
+        }
+
+        private int InsertPricesIntoCatalog(ICollection<Price> pricesList)
+        {
+            using (CatalogContext context = new CatalogContext())
+            {
+                int pricesNum = 0;
+                foreach (var price in pricesList)
+                {
+                    bool itemExist = context.Items.Any(currItem => currItem.ItemCode.Equals(price.ItemCode));
+                    bool priceExists = context.Prices.Any(currPrice => currPrice.StoreId.Equals(price.StoreId) && currPrice.ItemCode.Equals(price.ItemCode) && currPrice.UpdateTime.Equals(price.UpdateTime));
+                    if (!priceExists && itemExist)
+                    {
+                        context.Prices.Add(price);
+                        pricesNum++;
+                        if (pricesNum == Constants.MaxPricesToUpdate)
+                        {
+                            break;
+                        }
+                    }
+                }
+                context.SaveChanges();
+                return pricesNum;
+            }
         }
 
         internal int UpdateChainStores(string storesXmlFilePath)

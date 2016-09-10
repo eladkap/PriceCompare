@@ -10,8 +10,9 @@
         public static int XmlFilesNumber = 1;
         public static string Currency = "NIS";
         public static int CostProximity = 2;
-        public static int MaxStoresToUpdate = 100;
-        public static int MaxItemsToUpdate = 100;
-        public static int MaxPricesToUpdate = 100;
+        public static int MaxStoresToUpdate = 20;
+        public static int MaxItemsToUpdate = 20;
+        public static int MaxPricesToUpdate = 20;
+        public static int MaxResultsNumber = 9;
     }
 }

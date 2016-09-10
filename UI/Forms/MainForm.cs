@@ -142,7 +142,7 @@ namespace FinalLab
             {
                 UpdateChainStores(xmlFilePath);
             }
-            else if (prefix.Equals("FullPrice"))
+            else if (prefix.Equals("PriceFull"))
             {
                 UpdateItems(xmlFilePath);
                 UpdatePrices(xmlFilePath);

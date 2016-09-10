@@ -39,10 +39,28 @@ namespace Tester
             }
         }
 
+        static void TestGetPricesFromXml(int limit)
+        {
+            PriceFullXmlDecoder decoder = new PriceFullXmlDecoder();
+            string priceFullXmlFilePath = $@"{Constants.XmlPriceFullDirPath}\PriceFull7290027600007-125-201608160341.xml";
+            ICollection<Price> pricesList = decoder.DecodePricesFromFile(priceFullXmlFilePath);
+            int i = 0;
+            foreach (var price in pricesList)
+            {
+                Console.WriteLine(price);
+                i++;
+                if (i == limit)
+                {
+                    return;
+                }
+            }
+        }
+
         static void Main(string[] args)
         {
             //TestGetChainAndItsStoresFromXml();
-            TestGetItemsFromXml(Constants.MaxItemsToUpdate);
+            //TestGetItemsFromXml(Constants.MaxItemsToUpdate);
+            TestGetPricesFromXml(Constants.MaxPricesToUpdate);
         }
     }
 }
