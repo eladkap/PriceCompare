@@ -62,6 +62,7 @@
             this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.btn_cancelUpdate = new System.Windows.Forms.Button();
             this.progressBar_update = new System.Windows.Forms.ProgressBar();
+            this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_chainLogo)).BeginInit();
             this.SuspendLayout();
@@ -431,6 +432,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorkerUpdate;
         private System.Windows.Forms.Button btn_cancelUpdate;
         private System.Windows.Forms.ProgressBar progressBar_update;
+        private System.ComponentModel.BackgroundWorker backgroundWorker1;
     }
 }
 

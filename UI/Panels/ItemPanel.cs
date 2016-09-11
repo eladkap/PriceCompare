@@ -17,6 +17,7 @@ namespace FinalLab
         Label _lbl_storeId;
         Button _btn_addToCart;
         Button _btn_priceGraph;
+        Button _btn_showImage;
         PictureBox _chainLogoPic;
         Label _lbl_storeName;
         PictureBox _itemPic;
@@ -25,6 +26,8 @@ namespace FinalLab
         public Button BtnAddToCart { get { return _btn_addToCart; } }
 
         public Button BtnPriceGraph { get { return _btn_priceGraph; } }
+
+        public Button BtnShowImage { get { return _btn_showImage; } }
 
         public ItemPanel(Item item, Price price, Store store)
         {
@@ -38,6 +41,7 @@ namespace FinalLab
             SetLabelItemPrice(price);
             SetButtonAddToCart();
             SetButtonPriceGraph();
+            SetButtonShowImage();
             SetStoreName(store);
             SetChainLogoPic(store);
             //SetItemPic(item);
@@ -60,6 +64,7 @@ namespace FinalLab
             // _panel.Controls.Add(_itemPic);
             _panel.Controls.Add(_btn_addToCart);
             _panel.Controls.Add(_btn_priceGraph);
+            _panel.Controls.Add(_btn_showImage);
             _panel.BorderStyle = BorderStyle.FixedSingle;
             _panel.Height = 300;
             _panel.Width = 300;
@@ -142,10 +147,21 @@ namespace FinalLab
             _btn_priceGraph = new Button();
             _btn_priceGraph.Name = "btn_priceGraph";
             _btn_priceGraph.Font = new Font("Arial", FontSize, FontStyle.Bold);
-            _btn_priceGraph.Image = Image.FromFile(Constants.RootDir + @"img\priceGraphIcon.png"); 
+            _btn_priceGraph.Image = Image.FromFile(Constants.RootDir + @"img\priceGraphIcon.png");
             _btn_priceGraph.Height = 60;
             _btn_priceGraph.Width = 60;
             _btn_priceGraph.Anchor = AnchorStyles.Bottom;
+        }
+
+        private void SetButtonShowImage()
+        {
+            _btn_showImage = new Button();
+            _btn_showImage.Name = "btn_showImage";
+            _btn_showImage.Font = new Font("Arial", FontSize, FontStyle.Bold);
+            _btn_showImage.Text = "Show Image";
+            _btn_showImage.Height = 20;
+            _btn_showImage.Width = 50;
+            _btn_showImage.Anchor = AnchorStyles.Bottom;
         }
 
         public void SetStoreName(Store store)

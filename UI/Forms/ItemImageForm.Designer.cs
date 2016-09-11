@@ -1,6 +1,6 @@
-﻿namespace FinalLab.Forms
+﻿namespace UI.Forms
 {
-    partial class ItemDetailsForm
+    partial class ItemImageForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,34 +28,33 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.lbl_itemName = new System.Windows.Forms.Label();
+            this.pictureBox_item = new System.Windows.Forms.PictureBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_item)).BeginInit();
             this.SuspendLayout();
             // 
-            // lbl_itemName
+            // pictureBox_item
             // 
-            this.lbl_itemName.AutoSize = true;
-            this.lbl_itemName.Font = new System.Drawing.Font("Microsoft Sans Serif", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lbl_itemName.Location = new System.Drawing.Point(181, 55);
-            this.lbl_itemName.Name = "lbl_itemName";
-            this.lbl_itemName.Size = new System.Drawing.Size(51, 20);
-            this.lbl_itemName.TabIndex = 0;
-            this.lbl_itemName.Text = "label1";
+            this.pictureBox_item.Location = new System.Drawing.Point(264, 134);
+            this.pictureBox_item.Name = "pictureBox_item";
+            this.pictureBox_item.Size = new System.Drawing.Size(342, 252);
+            this.pictureBox_item.TabIndex = 0;
+            this.pictureBox_item.TabStop = false;
             // 
-            // ItemDetailsForm
+            // ItemImageForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(492, 353);
-            this.Controls.Add(this.lbl_itemName);
-            this.Name = "ItemDetailsForm";
-            this.Text = "ItemDetailsForm";
+            this.ClientSize = new System.Drawing.Size(926, 514);
+            this.Controls.Add(this.pictureBox_item);
+            this.Name = "ItemImageForm";
+            this.Text = "ItemImageForm";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox_item)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label lbl_itemName;
+        private System.Windows.Forms.PictureBox pictureBox_item;
     }
 }

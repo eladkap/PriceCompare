@@ -8,13 +8,19 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace FinalLab.Forms
+namespace UI.Forms
 {
-    public partial class ItemDetailsForm : Form
+    public partial class ItemImageForm : Form
     {
-        public ItemDetailsForm()
+        public ItemImageForm()
         {
             InitializeComponent();
+        }
+
+        internal void ShowImage(string itemPicUrl)
+        {
+            pictureBox_item.ImageLocation = itemPicUrl;
+            pictureBox_item.SizeMode = PictureBoxSizeMode.Zoom;
         }
     }
 }

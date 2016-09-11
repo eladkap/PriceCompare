@@ -9,6 +9,7 @@ using System.ComponentModel;
 using XmlAccess;
 using System.Threading.Tasks;
 using System.Drawing;
+using UI.Forms;
 
 namespace FinalLab
 {
@@ -32,13 +33,14 @@ namespace FinalLab
         string _filePath;
         string _prefix;
 
-        string _searchCriteria;
-
         public delegate void ButtonAddToCartClickedEventHandler(object sender, EventArgs e);
         public event ButtonAddToCartClickedEventHandler AddToCartButtonClicked;
 
         public delegate void ButtonPriceGraphClickedEventHandler(object sender, EventArgs e);
         public event ButtonAddToCartClickedEventHandler PriceGraphButtonClicked;
+
+        public delegate void ButtonShowImageClickedEventHandler(object sender, EventArgs e);
+        public event ButtonShowImageClickedEventHandler ShowImageButtonClicked;
 
         public MainForm()
         {
@@ -178,6 +180,27 @@ namespace FinalLab
             ViewPriceGraph(item, _store);
         }
 
+        private void OnShowImagehButtonClicked(object sender, EventArgs e)
+        {
+            ShowImageButtonClicked?.Invoke(this, e);
+            Button senderBtn = (Button)sender;
+            FlowLayoutPanel panelParent = (FlowLayoutPanel)senderBtn.Parent;
+            Item item = GetItemFromPanel(panelParent);
+            ViewItemImage(item);
+        }
+
+        private void ViewItemImage(Item item)
+        {
+            string query = $"{item.ManufacturerItemDescription} {item.ManufacturerName}";
+            string itemPicUrl = GoogleEngine.GetPictureUrl(query);
+            if (itemPicUrl != null)
+            {
+                ItemImageForm itemImageForm = new ItemImageForm();
+                itemImageForm.ShowImage(itemPicUrl);
+                itemImageForm.ShowDialog();
+            }
+        }
+
         private void ViewPriceGraph(Item item, Store store)
         {
             PriceGraphForm priceGraphForm = new PriceGraphForm(item, store);
@@ -190,6 +213,7 @@ namespace FinalLab
             ItemPanel itemPanel = new ItemPanel(item, price, store);
             itemPanel.BtnAddToCart.Click += new EventHandler(OnAddCartButtonCicked);
             itemPanel.BtnPriceGraph.Click += new EventHandler(OnPriceGraphButtonClicked);
+            itemPanel.BtnShowImage.Click += new EventHandler(OnShowImagehButtonClicked);
             return itemPanel.Panel;
         }
 

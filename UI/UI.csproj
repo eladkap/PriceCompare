@@ -79,11 +79,11 @@
     <Compile Include="Forms\ExpensiveCheapForm.Designer.cs">
       <DependentUpon>ExpensiveCheapForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Forms\ItemDetailsForm.cs">
+    <Compile Include="Forms\ItemImageForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Forms\ItemDetailsForm.Designer.cs">
-      <DependentUpon>ItemDetailsForm.cs</DependentUpon>
+    <Compile Include="Forms\ItemImageForm.Designer.cs">
+      <DependentUpon>ItemImageForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LoginForm.cs">
       <SubType>Form</SubType>
@@ -126,8 +126,8 @@
     <EmbeddedResource Include="Forms\ExpensiveCheapForm.resx">
       <DependentUpon>ExpensiveCheapForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Forms\ItemDetailsForm.resx">
-      <DependentUpon>ItemDetailsForm.cs</DependentUpon>
+    <EmbeddedResource Include="Forms\ItemImageForm.resx">
+      <DependentUpon>ItemImageForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LoginForm.resx">
       <DependentUpon>LoginForm.cs</DependentUpon>
