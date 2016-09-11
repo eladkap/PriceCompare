@@ -112,7 +112,6 @@ namespace FinalLab.Engines
             }
         }
 
-        // TODO: make it async
         internal ICollection<Tuple<Item, Price, Store>> GetAllUpdatedPricesByItemName(string itemName)
         {
             using (CatalogContext context = new CatalogContext())
@@ -167,6 +166,10 @@ namespace FinalLab.Engines
 
         public Price GetItemUpdatedPriceByStore(Item item, Store store)
         {
+            if (store == null)
+            {
+                return null;
+            }
             using (CatalogContext context = new CatalogContext())
             {
                 Price priceObj = (from price in context.Prices

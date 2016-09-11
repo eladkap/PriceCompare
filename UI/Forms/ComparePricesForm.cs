@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using FinalLab.Managers;
 using FinalLab.Panels;
 using UI.Forms;
+using Microsoft.Office.Interop.Excel;
 
 namespace FinalLab.Forms
 {
@@ -181,23 +182,27 @@ namespace FinalLab.Forms
             flowLayoutPanel_comparison.Controls.Add(compareItemPanel.Panel);
         }
 
-        private void SetTotalCostsLabel(Label lbl_totalCost, double totalCost)
+        private void SetTotalCostsLabel(System.Windows.Forms.Label lbl_totalCost, double totalCost)
         {
             lbl_totalCost.Text = $"Total: {totalCost} [{Constants.Currency}]";
             lbl_totalCost.Text = $"Total: {totalCost} [{Constants.Currency}]";
         }
 
+        private double GetTotalCostOfStore(Store store)
+        {
+            double totalCost = _catalogManager.CalculateCartTotalCostByStore(_cart, store);
+            return Math.Round(totalCost, Constants.CostProximity);
+        }
+
         private void SetComparisonTotalCost1()
         {
-            double totalCost1 = _catalogManager.CalculateCartTotalCostByStore(_cart, _store1);
-            totalCost1 = Math.Round(totalCost1, Constants.CostProximity);
+            double totalCost1 = GetTotalCostOfStore(_store1);
             SetTotalCostsLabel(lbl_totalCost1, totalCost1);
         }
 
         private void SetComparisonTotalCost2()
         {
-            double totalCost2 = _catalogManager.CalculateCartTotalCostByStore(_cart, _store2);
-            totalCost2 = Math.Round(totalCost2, Constants.CostProximity);
+            double totalCost2 = GetTotalCostOfStore(_store2);
             SetTotalCostsLabel(lbl_totalCost2, totalCost2);
         }
 
@@ -226,6 +231,58 @@ namespace FinalLab.Forms
             expensiveCheapForm.SetProperties(_cart, _store1, _store2, kMostCheap, kMostExpensive);
             expensiveCheapForm.ShowPanel();
             expensiveCheapForm.ShowDialog();
+        }
+
+        //--------------------------------------------export to excel------------------------------------------------------//
+
+        private void ExportToExcelFile()
+        {
+            Microsoft.Office.Interop.Excel.Application xls=new Microsoft.Office.Interop.Excel.Application();
+            Workbook workBook = xls.Workbooks.Add(XlSheetType.xlWorksheet);
+            Worksheet worksheet = (Worksheet)xls.ActiveSheet;
+            xls.Visible = true;
+
+            worksheet.Cells[2, 1] = "Item Name";
+            worksheet.Cells[1, 2] = _store1.StoreName;
+            worksheet.Cells[1, 5] = _store2.StoreName;
+
+
+            worksheet.Cells[2, 2] = "Price Per Unit";
+            worksheet.Cells[2, 3] = "Amount";
+            worksheet.Cells[2, 4] = "Total Price";
+            worksheet.Cells[2, 6] = "Price Per Unit";
+            worksheet.Cells[2, 7] = "Amount";
+            worksheet.Cells[2, 8] = "Total Price";
+
+            int row = 3;
+
+            _cart.Items.ToList().ForEach((item) =>
+            {
+                Price price1 = _catalogManager.GetItemUpdatedPriceByStore(item, _store1);
+                Price price2 = _catalogManager.GetItemUpdatedPriceByStore(item, _store2);
+                worksheet.Cells[row, 1] = item.ItemName;
+                worksheet.Cells[row, 2] = price1.PriceValue;
+                worksheet.Cells[row, 3] = item.QtyInPackage;
+                worksheet.Cells[row, 4] = item.QtyInPackage * price1.PriceValue;
+
+                worksheet.Cells[row, 6] = price2.PriceValue;
+                worksheet.Cells[row, 7] = item.QtyInPackage;
+                worksheet.Cells[row, 8] = item.QtyInPackage * price2.PriceValue;
+
+                row++;
+            });
+
+            worksheet.Cells[row, 1] = "Total Price";
+            worksheet.Cells[row, 2] = GetTotalCostOfStore(_store1);
+            worksheet.Cells[row, 4] = "Total Price";
+            worksheet.Cells[row, 5] = GetTotalCostOfStore(_store2);
+
+            MessageBox.Show("Excel file opened.");
+        }
+
+        private void btn_exportToExcel_Click(object sender, EventArgs e)
+        {
+            ExportToExcelFile();
         }
     }
 }

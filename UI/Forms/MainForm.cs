@@ -32,6 +32,8 @@ namespace FinalLab
         string _filePath;
         string _prefix;
 
+        string _searchCriteria;
+
         public delegate void ButtonAddToCartClickedEventHandler(object sender, EventArgs e);
         public event ButtonAddToCartClickedEventHandler AddToCartButtonClicked;
 
@@ -140,24 +142,7 @@ namespace FinalLab
             }
         }
 
-        //TODO: add backgroundworker to search items
-        private void SearchItems()
-        {
-            // _backgroundWorker.DoWork += delegate (object s, DoWorkEventArgs args)
-            // {
-            LoadItemsByName();
-            // };
-            // _backgroundWorker.RunWorkerCompleted += delegate (object s, RunWorkerCompletedEventArgs args)
-            // {
-            //      MessageBox.Show("Search completed","Search",MessageBoxButtons.OK,MessageBoxIcon.Information);
-            // };
-            //_backgroundWorker.RunWorkerAsync();
-        }
 
-        private void btn_searchItem_Click(object sender, EventArgs e)
-        {
-            SearchItems();
-        }
 
         private void AddItemToCart(Item item)
         {
@@ -208,11 +193,6 @@ namespace FinalLab
             return itemPanel.Panel;
         }
 
-        private async void PerformAsyncJob(Action PerformJob)
-        {
-            await System.Threading.Tasks.Task.Run(() => PerformJob());
-        }
-
         private void LoadItem(Tuple<Item, Price, Store> itemPriceStoreTuple)
         {
             Item item = itemPriceStoreTuple.Item1;
@@ -241,7 +221,7 @@ namespace FinalLab
             AutoScroll = true;
         }
 
-        private void LoadItemsByName()
+        private void SearchItemsByName()
         {
             ICollection<Tuple<Item, Price, Store>> itemsPricesStoresList;
             if (comboBox_chain.SelectedItem.ToString().Equals("All Chains"))
@@ -256,12 +236,13 @@ namespace FinalLab
             {
                 itemsPricesStoresList = _catalogManager.GetItemsByNameAndStore(txt_searchItemName.Text, _store);
             }
+
             lbl_resultsNum.Visible = true;
+
             flowLayoutPanel_items.Controls.Clear();
             if (itemsPricesStoresList.Count() == 0)
             {
                 lbl_resultsNum.Text = "0 results";
-                return;
             }
             lbl_resultsNum.Text = $"({itemsPricesStoresList.Count().ToString()})";
             LayoutItems(itemsPricesStoresList);
@@ -488,20 +469,6 @@ namespace FinalLab
             }
         }
 
-        // background update task
-        private int PerformUpdateCatalog(BackgroundWorker worker, DoWorkEventArgs e)
-        {
-            if (_prefix.Equals("Stores"))
-            {
-                return UpdateChainStores(_filePath, worker, e);
-            }
-            else if (_prefix.Equals("PriceFull"))
-            {
-                return UpdateItems(_filePath, worker, e) + UpdatePrices(_filePath, worker, e);
-            }
-            return 0;
-        }
-
         private void storesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (!ValidateAdmin())
@@ -526,6 +493,20 @@ namespace FinalLab
 
         //-------------------------------------Background Update----------------------------------------------------------//
 
+        // background update task
+        private int PerformUpdateCatalog(BackgroundWorker worker, DoWorkEventArgs e)
+        {
+            if (_prefix.Equals("Stores"))
+            {
+                return UpdateChainStores(_filePath, worker, e);
+            }
+            else if (_prefix.Equals("PriceFull"))
+            {
+                return UpdateItems(_filePath, worker, e) + UpdatePrices(_filePath, worker, e);
+            }
+            return 0;
+        }
+
         private void backgroundWorkerUpdate_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -542,11 +523,11 @@ namespace FinalLab
             Invoke((Action)(() => progressBar_update.Value = e.ProgressPercentage));
         }
 
-        private void SetProgressBarValue(int value)
+        private void SetProgressBarValue(ProgressBar progressBar, int value)
         {
-            progressBar_update.Invoke((MethodInvoker)delegate ()
+            progressBar.Invoke((MethodInvoker)delegate ()
             {
-                progressBar_update.Value = value;
+                progressBar.Value = value;
             });
         }
 
@@ -557,17 +538,18 @@ namespace FinalLab
                 int recordsNum = (int)e.Result;
                 MessageBox.Show($"{recordsNum} records were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 MessageBox.Show("Catalog was updated successfully.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                SetProgressBarValue(100);
+                SetProgressBarValue(progressBar_update, 100);
             }
             else
             {
                 MessageBox.Show("Catalog was cancelled. No records were Updated.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
-            SetProgressBarValue(0);
+            SetProgressBarValue(progressBar_update, 0);
         }
 
-        //-------------------------------------Background Search----------------------------------------------------------//
-
-
+        private void btn_searchItem_Click(object sender, EventArgs e)
+        {
+            SearchItemsByName();
+        }
     }
 }

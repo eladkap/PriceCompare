@@ -11,8 +11,8 @@
         public static string Currency = "NIS";
         public static int CostProximity = 2;
         public static int MaxStoresToUpdate = 200;
-        public static int MaxItemsToUpdate = 20000;
-        public static int MaxPricesToUpdate = 20000;
+        public static int MaxItemsToUpdate = 300;
+        public static int MaxPricesToUpdate = 300;
         public static int MaxResultsNumber = 9;
     }
 }
