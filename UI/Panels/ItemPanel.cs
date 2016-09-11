@@ -142,11 +142,9 @@ namespace FinalLab
             _btn_priceGraph = new Button();
             _btn_priceGraph.Name = "btn_priceGraph";
             _btn_priceGraph.Font = new Font("Arial", FontSize, FontStyle.Bold);
-            _btn_priceGraph.Image = Image.FromFile(Constants.RootDir + @"img\graph_logo.png");
-            //_btn_priceGraph.AutoSize = true;
-           // _btn_priceGraph.Image. = PictureBoxSizeMode.Zoom;
-            _btn_priceGraph.Height = 30;
-            _btn_priceGraph.Width = 30;
+            _btn_priceGraph.Image = Image.FromFile(Constants.RootDir + @"img\priceGraphIcon.png"); 
+            _btn_priceGraph.Height = 60;
+            _btn_priceGraph.Width = 60;
             _btn_priceGraph.Anchor = AnchorStyles.Bottom;
         }
 
