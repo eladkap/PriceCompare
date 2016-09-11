@@ -101,12 +101,12 @@ namespace FinalLab.Interfaces
         /// <summary>
         /// Returns number of inserted item records.
         /// </summary>
-        int UpdateItems(string priceFullXmlFilePath);
+        int UpdateItems(string priceFullXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar);
 
         /// <summary>
         /// Returns number of inserted price records.
         /// </summary>
-        int UpdatePrices(string priceFullXmlFilePath);
+        int UpdatePrices(string priceFullXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar);
 
         ICollection<Price> GetItemPricesOrderByUpdateTime(Item item);
 

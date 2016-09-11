@@ -62,7 +62,6 @@
             this.backgroundWorkerUpdate = new System.ComponentModel.BackgroundWorker();
             this.btn_cancelUpdate = new System.Windows.Forms.Button();
             this.progressBar_update = new System.Windows.Forms.ProgressBar();
-            this.lbl_percent = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox_chainLogo)).BeginInit();
             this.SuspendLayout();
@@ -364,22 +363,11 @@
             this.progressBar_update.Size = new System.Drawing.Size(403, 23);
             this.progressBar_update.TabIndex = 20;
             // 
-            // lbl_percent
-            // 
-            this.lbl_percent.AutoSize = true;
-            this.lbl_percent.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(177)));
-            this.lbl_percent.Location = new System.Drawing.Point(961, 77);
-            this.lbl_percent.Name = "lbl_percent";
-            this.lbl_percent.Size = new System.Drawing.Size(28, 17);
-            this.lbl_percent.TabIndex = 21;
-            this.lbl_percent.Text = "0%";
-            // 
             // MainForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1362, 585);
-            this.Controls.Add(this.lbl_percent);
             this.Controls.Add(this.progressBar_update);
             this.Controls.Add(this.btn_cancelUpdate);
             this.Controls.Add(this.btn_comparePrices);
@@ -443,7 +431,6 @@
         private System.ComponentModel.BackgroundWorker backgroundWorkerUpdate;
         private System.Windows.Forms.Button btn_cancelUpdate;
         private System.Windows.Forms.ProgressBar progressBar_update;
-        private System.Windows.Forms.Label lbl_percent;
     }
 }
 

@@ -14,10 +14,12 @@ namespace FinalLab.Managers
     public class CatalogManager : ICatalogManager
     {
         private CatalogEngine catalogEngine;
+        private UpdateEngine updateEngine;
 
         public CatalogManager()
         {
             catalogEngine = new CatalogEngine();
+            updateEngine = new UpdateEngine();
         }
 
         public Chain GetChainByChainId(string chainId)
@@ -82,7 +84,7 @@ namespace FinalLab.Managers
 
         public void InsertChainIntoCatalog(Chain chain, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
-            catalogEngine.InsertChainStoresIntoCatalog(chain, worker, e, progressBar);
+            updateEngine.InsertChainStoresIntoCatalog(chain, worker, e, progressBar);
         }
 
         public void InsertItemIntoCatalog(Item item)
@@ -162,17 +164,17 @@ namespace FinalLab.Managers
 
         public int UpdateChainStores(string storesXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
-            return catalogEngine.UpdateChainStores(storesXmlFilePath, worker, e, progressBar);
+            return updateEngine.UpdateChainStores(storesXmlFilePath, worker, e, progressBar);
         }
 
-        public int UpdateItems(string priceFullXmlFilePath)
+        public int UpdateItems(string priceFullXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
-            return catalogEngine.UpdateItems(priceFullXmlFilePath);
+            return updateEngine.UpdateItems(priceFullXmlFilePath, worker, e, progressBar);
         }
 
-        public int UpdatePrices(string priceFullXmlFilePath)
+        public int UpdatePrices(string priceFullXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e, ProgressBar progressBar)
         {
-            return catalogEngine.UpdatePrices(priceFullXmlFilePath);
+            return updateEngine.UpdatePrices(priceFullXmlFilePath, worker, e, progressBar);
         }
     }
 }

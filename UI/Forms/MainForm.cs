@@ -8,6 +8,7 @@ using FinalLab.Forms;
 using System.ComponentModel;
 using XmlAccess;
 using System.Threading.Tasks;
+using System.Drawing;
 
 namespace FinalLab
 {
@@ -445,17 +446,15 @@ namespace FinalLab
             return storesNum;
         }
 
-        private int UpdateItems(string priceFullXmlFilePath)
+        private int UpdateItems(string priceFullXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e)
         {
-            int itemsNum = _catalogManager.UpdateItems(priceFullXmlFilePath);
-            MessageBox.Show($"{itemsNum} items were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int itemsNum = _catalogManager.UpdateItems(priceFullXmlFilePath, worker, e, progressBar_update);
             return itemsNum;
         }
 
-        private int UpdatePrices(string priceFullXmlFilePath)
+        private int UpdatePrices(string priceFullXmlFilePath, BackgroundWorker worker, DoWorkEventArgs e)
         {
-            int pricesNum = _catalogManager.UpdatePrices(priceFullXmlFilePath);
-            MessageBox.Show($"{pricesNum} prices were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            int pricesNum = _catalogManager.UpdatePrices(priceFullXmlFilePath, worker, e, progressBar_update);
             return pricesNum;
         }
 
@@ -481,7 +480,6 @@ namespace FinalLab
                 if (ValidateXmlFile(_filePath))
                 {
                     StartUpdating();
-                    //PerformUpdateCatalog(filePath, prefix);
                 }
                 else
                 {
@@ -499,7 +497,7 @@ namespace FinalLab
             }
             else if (_prefix.Equals("PriceFull"))
             {
-                return UpdateItems(_filePath) + UpdatePrices(_filePath);
+                return UpdateItems(_filePath, worker, e) + UpdatePrices(_filePath, worker, e);
             }
             return 0;
         }
@@ -528,13 +526,6 @@ namespace FinalLab
 
         //-------------------------------------Background Update----------------------------------------------------------//
 
-
-
-        private void btn_cancel_Click(object sender, EventArgs e)
-        {
-            backgroundWorkerUpdate.CancelAsync();
-        }
-
         private void backgroundWorkerUpdate_DoWork(object sender, DoWorkEventArgs e)
         {
             BackgroundWorker worker = sender as BackgroundWorker;
@@ -549,27 +540,34 @@ namespace FinalLab
         private void backgroundWorkerUpdate_ProgressChanged(object sender, ProgressChangedEventArgs e)
         {
             Invoke((Action)(() => progressBar_update.Value = e.ProgressPercentage));
-            Invoke((Action)(() => lbl_percent.Text = $"{progressBar_update.Value}%"));
+        }
+
+        private void SetProgressBarValue(int value)
+        {
+            progressBar_update.Invoke((MethodInvoker)delegate ()
+            {
+                progressBar_update.Value = value;
+            });
         }
 
         private void backgroundWorkerUpdate_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            progressBar_update.Invoke((MethodInvoker)delegate ()
-            {
-                progressBar_update.Value = 0;
-            });
-            progressBar_update.Value = 0;
-            lbl_percent.Text = "0%";
             if (!e.Cancelled)
             {
-                int storesNum = (int)e.Result;
-                MessageBox.Show($"{storesNum} stores were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                int recordsNum = (int)e.Result;
+                MessageBox.Show($"{recordsNum} records were inserted into database.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 MessageBox.Show("Catalog was updated successfully.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                SetProgressBarValue(100);
             }
             else
             {
                 MessageBox.Show("Catalog was cancelled. No records were Updated.", "Update Catalog", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
+            SetProgressBarValue(0);
         }
+
+        //-------------------------------------Background Search----------------------------------------------------------//
+
+
     }
 }
